@@ -5,6 +5,7 @@ import { Text, View, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 const width_proportion = "30%";
 const width_content = "60%";
+const templateButton = "90%";
 // import { Text } from "react-native-paper";
 
 const CurrentGoalWalking = () => {
@@ -125,13 +126,15 @@ const CurrentGoalWalking = () => {
           onPress={() => navigation.navigate("Biking")}
         />
       </View>
-      <Button
-        marginTop={10}
-        color="black"
-        title="Create template"
-        onPress={createTemplate}
-        variant="outlined"
-      />
+      <View style={styles.template}>
+        <Button
+          style={styles.templatebutton}
+          color="black"
+          title="Create template"
+          onPress={() => createTemplate()}
+          variant="outlined"
+        />
+      </View>
       {templates.map((template, index) => (
         <View key={index} style={styles.content}>
           <View style={styles.box}>
@@ -173,20 +176,32 @@ const CurrentGoalWalking = () => {
               onPress={updateValue}
               title="Start"
               color="white"
+              marginTop={10}
+              leading={(props) => <Icon name="hourglass-start" {...props} />}
             ></Button>
             <Button
               style={styles.bottomButton}
-              title="Delete Goal"
-              color="grey"
+              title="Delete"
+              color="white"
+              leading={(props) => <Icon name="trash-alt" {...props} />}
               marginTop={20}
               onPress={() => deleteTemplate(index)}
             ></Button>
+            <View style={styles.pause_resume_btn}>
+              <Button
+                leading={(props) => <Icon name="pause" {...props} size={20} />}
+                color="white"
+                onPress={handlePausePress}
+              />
 
-            <Button
-              style={styles.bottomButton}
-              title="End Goal"
-              color="white"
-            ></Button>
+              <Button
+                leading={(props) => (
+                  <Icon name="caret-right" {...props} size={30} />
+                )}
+                color="white"
+                onPress={resumeCounting}
+              />
+            </View>
           </View>
         </View>
       ))}
@@ -242,8 +257,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  template: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  templatebutton: {
+    width: templateButton,
+    marginTop: 5,
+  },
   bottomButton: {
     marginBottom: 5,
+  },
+  pause_resume_btn: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 

@@ -5,6 +5,7 @@ import { Text, View, StyleSheet, Image, Alert } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 const width_proportion = "30%";
 const width_content = "60%";
+const templateButton = "90%";
 // import { Text } from "react-native-paper";
 
 const CurrentGoalBiking = () => {
@@ -30,12 +31,12 @@ const CurrentGoalBiking = () => {
     });
   };
   const handlePausePress = () => {
-    fetch("http://localhost:8080/running-pause-counting", {
+    fetch("http://localhost:8080/biking-pause-counting", {
       method: "POST",
     });
   };
   const resumeCounting = () => {
-    fetch("http://localhost:8080/running-resume-counting", {
+    fetch("http://localhost:8080/biking-resume-counting", {
       method: "POST",
     })
       .then((response) => {
@@ -125,13 +126,15 @@ const CurrentGoalBiking = () => {
           color="black"
         />
       </View>
-      <Button
-        marginTop={10}
-        color="black"
-        title="Create template"
-        onPress={createTemplate}
-        variant="outlined"
-      />
+      <View style={styles.template}>
+        <Button
+          style={styles.templatebutton}
+          color="black"
+          title="Create template"
+          onPress={() => createTemplate()}
+          variant="outlined"
+        />
+      </View>
       {templates.map((template, index) => (
         <View key={index} style={styles.content}>
           <View style={styles.box}>
@@ -169,18 +172,36 @@ const CurrentGoalBiking = () => {
           </View>
           <View>
             <Button
-              title="Start"
-              color="white"
               style={styles.bottomButton}
               onPress={updateValue}
+              title="Start"
+              color="white"
+              marginTop={10}
+              leading={(props) => <Icon name="hourglass-start" {...props} />}
             ></Button>
             <Button
               style={styles.bottomButton}
-              title="Delete Goal"
-              color="grey"
+              title="Delete"
+              color="white"
+              leading={(props) => <Icon name="trash-alt" {...props} />}
               marginTop={20}
               onPress={() => deleteTemplate(index)}
             ></Button>
+            <View style={styles.pause_resume_btn}>
+              <Button
+                leading={(props) => <Icon name="pause" {...props} size={20} />}
+                color="white"
+                onPress={handlePausePress}
+              />
+
+              <Button
+                leading={(props) => (
+                  <Icon name="caret-right" {...props} size={30} />
+                )}
+                color="white"
+                onPress={resumeCounting}
+              />
+            </View>
           </View>
         </View>
       ))}
@@ -236,8 +257,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  template: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  templatebutton: {
+    width: templateButton,
+    marginTop: 5,
+  },
   bottomButton: {
     marginBottom: 5,
+  },
+  pause_resume_btn: {
+    flexDirection: "row",
+    
   },
 });
 
