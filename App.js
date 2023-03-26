@@ -1,26 +1,50 @@
+import React from "react";
+
 import { StatusBar } from 'expo-status-bar';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import SelectBody from './Screens/SelectBody';
 import Human1 from './Screens/Human1';
 import SetUpPet from './Screens/SetUpPet';
 
+import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
+
+const App= () => {
 
 
-export default function App() {
-  
+    return (
+        <View style={styles.container}>
+            <NavigationContainer>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerStyled: {
+                            backgroundColor:'transparent'
+                        },
+                    }}
+                    initialRouteName={SelectBody}
+                >
+                <React.Fragment>
+                    <Stack.Screen name="SelectUserType" component={SelectBody} />
+                    <Stack.Screen name="Human1" component={Human1} />
+                    <Stack.Screen name="SetUpPet" component={SetUpPet} />
 
-  return (
-    <View style={styles.container}>
-      <Human1/>
+                </React.Fragment>
 
-      <StatusBar style="auto" />
+                </Stack.Navigator>
+            </NavigationContainer>
 
-    </View>
-  )
+            <StatusBar style="auto" />
+
+        </View>
+    )
 }
 
 const styles = StyleSheet.create ({
- 
-
+    container: {
+        flex:1,
+    }
 });
 
+export default App;

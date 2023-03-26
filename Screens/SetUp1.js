@@ -3,7 +3,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import SelectBody from './SelectBody';
 
- function SetUp1(){
+const SetUp1 = () => {
     return(
         <View style={StyleSheet.Setup1Container}>
             
