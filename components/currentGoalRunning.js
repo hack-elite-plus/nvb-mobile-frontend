@@ -188,6 +188,7 @@ const CurrentGoalRunning = () => {
           </View>
           <View>
             <Button
+             style={styles.bottomButton}
               onPress={updateValue}
               title="Start"
               color="white"

@@ -17,7 +17,7 @@ const CurrentGoalBiking = () => {
   const [count, setCount] = useState(0);
 
   const updateValue = () => {
-    fetch("http://localhost:8080/running-update-value", {
+    fetch("http://localhost:8080/biking-update-value", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -49,7 +49,7 @@ const CurrentGoalBiking = () => {
   };
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("http://localhost:8080/running-get-value")
+      fetch("http://localhost:8080/biking-get-value")
         .then((response) => response.json())
         .then((json) => {
           setCount(json.value);
@@ -168,7 +168,12 @@ const CurrentGoalBiking = () => {
             </View>
           </View>
           <View>
-            <Button title="Start" color="white" marginTop={10} onPress={updateValue}></Button>
+            <Button
+              title="Start"
+              color="white"
+              style={styles.bottomButton}
+              onPress={updateValue}
+            ></Button>
             <Button
               style={styles.bottomButton}
               title="Delete Goal"
@@ -176,7 +181,6 @@ const CurrentGoalBiking = () => {
               marginTop={20}
               onPress={() => deleteTemplate(index)}
             ></Button>
-             <Button title="Delete" color="white" marginTop={10}></Button>
           </View>
         </View>
       ))}
