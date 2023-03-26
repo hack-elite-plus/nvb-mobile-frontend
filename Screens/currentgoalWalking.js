@@ -1,26 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { useRoute } from "@react-navigation/native";
+import React, { useState, useEffect, useRef } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { IconButton, Button } from "@react-native-material/core";
-import { Text, View, StyleSheet, Image, ScrollView, Alert } from "react-native";
+import { Button } from "@react-native-material/core";
+import { Text, View, StyleSheet, Image, Alert, ScrollView } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 const width_proportion = "30%";
 const width_content = "60%";
 const templateButton = "90%";
-import { useNavigation } from "@react-navigation/native";
 // import { Text } from "react-native-paper";
 
-const CurrentGoalRunning = () => {
+const CurrentGoalWalking = () => {
+  // const route=useRoute();
   const navigation = useNavigation();
   // const route = useRoute();
   // const { input } = route.params;
 
   const [templates, setTemplates] = useState([]);
   const [goalValue, setGoalValue] = useState("");
-
   const [count, setCount] = useState(0);
+  const [goaltype, setGoalType] = useState("");
+  const [isADistance, setIsGoalType] = useState(false);
+
+  //stopwatch
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const intervalRef = useRef(null);
+
+  const toggle = () => {
+    setIsActive(!isActive);
+  };
+
+  const reset = () => {
+    setSeconds(0);
+    setIsActive(false);
+  };
+
+  const getDisplayTime = () => {
+    const hour = Math.floor(seconds / 3600);
+    const minute = Math.floor((seconds % 3600) / 60);
+    const second = Math.floor(seconds % 60);
+    return `${hour < 10 ? "0" : ""}${hour}:${minute < 10 ? "0" : ""}${minute}:${
+      second < 10 ? "0" : ""
+    }${second}`;
+  };
+
+  React.useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  React.useEffect(() => {
+    if (isActive) {
+      intervalRef.current = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+  }, [isActive]);
+  //end stopwatch
 
   const updateValue = () => {
-    fetch("http://localhost:8080/running-update-value", {
+    fetch("http://localhost:8080/walking-update-value", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -33,12 +72,12 @@ const CurrentGoalRunning = () => {
     });
   };
   const handlePausePress = () => {
-    fetch("http://localhost:8080/running-pause-counting", {
+    fetch("http://localhost:8080/walking-pause-counting", {
       method: "POST",
     });
   };
   const resumeCounting = () => {
-    fetch("http://localhost:8080/running-resume-counting", {
+    fetch("http://localhost:8080/walking-resume-counting", {
       method: "POST",
     })
       .then((response) => {
@@ -52,7 +91,7 @@ const CurrentGoalRunning = () => {
   };
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("http://localhost:8080/running-get-value")
+      fetch("http://localhost:8080/walking-get-value")
         .then((response) => response.json())
         .then((json) => {
           setCount(json.value);
@@ -65,45 +104,51 @@ const CurrentGoalRunning = () => {
 
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
-    fetch("http://localhost:8080/api/goal/running/value")
+    fetch("http://localhost:8080/api/goal/walking/value")
       .then((response) => response.json())
       .then((data) => {
         setGoalValue(data);
-        alert("ADD VALUE TO RUNNING");
+        alert("ADD VALUE TO Walking");
       })
       .catch((error) => {
         console.log("Error:", error);
         alert("Create a New Goal in MyGoal");
       });
   }, []);
-  // const getdata = () => {
-  //   useEffect(() => {
-  //     fetch("http://localhost:8080/api/goal/running/value")
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setGoalValue(data);
-  //         alert("ADD VALUE TO RUNNING");
-  //       })
-  //       .catch((error) => {
-  //         console.log("Error:", error);
-  //       });
-  //   }, []);
-  // };
+  useEffect(() => {
+    fetch("http://localhost:8080/api/goal/walking/goalType")
+      .then((response) => response.text())
+      .then((data) => {
+        setGoalType(data);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+        alert("error");
+      });
+  }, []);
+  useEffect(() => {
+    if (goaltype === "duration") {
+      setIsGoalType(false);
+      console.log(goaltype)
+    } else if (goaltype === "distance") {
+      setIsGoalType(true);
+    } else {
+      console.log("error");
+    }
+  });
 
   const createTemplate = () => {
     if (templates.length < 1) {
       const newTemplate = {};
-      // const newTemplate = { title: input };
       setTemplates([...templates, newTemplate]);
     } else {
-      alert("You cannot create any more templates.");
+      Alert.alert("You cannot create any more templates.");
     }
   };
 
   const deleteTemplate = (index) => {
-    fetch("http://localhost:8080/api/goal/running", {
+    fetch("http://localhost:8080/api/goal/walking", {
       method: "DELETE",
     })
       .then(() => {
@@ -122,18 +167,17 @@ const CurrentGoalRunning = () => {
       <View style={styles.sportNavigate}>
         <Button
           style={styles.text1}
+          titleStyle={{ color: "black" }}
           title="Running"
-          // titleStyle={{ color: "black" }}
-          variant="contained"
-          color="black"
+          variant="outlined"
+          onPress={() => navigation.navigate("Running")}
         />
         <Button
           style={styles.text2}
           title="Walking"
-          titleStyle={{ color: "black" }}
-          variant="outlined"
-          onPress={() => navigation.navigate("Walking")}
-          // onPress={() => navigation.navigate("Walking", { input: "" })}
+          // titleStyle={{ color: "black" }}
+          variant="contained"
+          color="black"
         />
         <Button
           style={styles.text3}
@@ -141,7 +185,6 @@ const CurrentGoalRunning = () => {
           titleStyle={{ color: "black" }}
           variant="outlined"
           onPress={() => navigation.navigate("Biking")}
-          // onPress={() => navigation.navigate("Biking", { input: "" })}
         />
       </View>
       <View style={styles.template}>
@@ -153,24 +196,30 @@ const CurrentGoalRunning = () => {
           variant="outlined"
         />
       </View>
-
       {templates.map((template, index) => (
         <View key={index} style={styles.content}>
           <View style={styles.box}>
             <View style={styles.boxContent}>
+              <Text>{goaltype}</Text>
               <Text style={{ fontSize: 20 }}>THIS WEEK</Text>
-              <Text style={{ fontSize: 40 }}>{count}</Text>
+              {isADistance ? (
+                <Text style={{ fontSize: 40 }}>{count}</Text>
+              ) : (
+                <Text style={{ fontSize: 40 }}>{getDisplayTime()}</Text>
+              )}
+              {/* <Text style={{ fontSize: 40 }}>{count}</Text> */}
               <Text style={{ fontSize: 20 }}>
-                of <Text style={{ fontSize: 20 }}>{goalValue}</Text> km
+                of <Text style={{ fontSize: 20 }}>{goalValue}</Text>{" "}
+                {isADistance ? "km" : "minites"}
               </Text>
 
               <Icon
                 style={{ marginTop: 10 }}
-                name="running"
+                name="walking"
                 size={30}
                 color="#000"
               />
-              <Text style={{ fontSize: 20 }}>Running</Text>
+              <Text style={{ fontSize: 20 }}>Biking</Text>
             </View>
           </View>
           <View style={styles.bottomContent}>
@@ -192,8 +241,8 @@ const CurrentGoalRunning = () => {
           <View>
             <Button
               style={styles.bottomButton}
-              onPress={updateValue}
-              title="Start"
+              onPress={isADistance ? updateValue : toggle}
+              title={isADistance ? "start" : isActive ? "pause" : "start"}
               color="white"
               marginTop={10}
               leading={(props) => <Icon name="hourglass-start" {...props} />}
@@ -206,31 +255,35 @@ const CurrentGoalRunning = () => {
               marginTop={20}
               onPress={() => deleteTemplate(index)}
             ></Button>
-            <View style={styles.pause_resume_btn}>
-              <Button
-                leading={(props) => <Icon name="pause" {...props} size={20} />}
-                color="white"
-                onPress={handlePausePress}
-              />
+            {isADistance ? (
+              <View style={styles.pause_resume_btn}>
+                <Button
+                  leading={(props) => (
+                    <Icon name="pause" {...props} size={20} />
+                  )}
+                  color="white"
+                  onPress={handlePausePress}
+                />
 
+                <Button
+                  leading={(props) => (
+                    <Icon name="caret-right" {...props} size={30} />
+                  )}
+                  color="white"
+                  onPress={resumeCounting}
+                />
+              </View>
+            ) : (
               <Button
-                leading={(props) => (
-                  <Icon name="caret-right" {...props} size={30} />
-                )}
+                title="reset"
+                leading={(props) => <Icon name="stop" {...props} size={20} />}
                 color="white"
-                onPress={resumeCounting}
+                onPress={reset}
               />
-            </View>
+            )}
 
             <View></View>
           </View>
-
-          {/* <Image
-          source={{
-            uri: "https://sman2babelan.sch.id/assets/icon/ionicons-2.0.1/png/512/ios7-circle-outline.png",
-          }}
-          style={{ width: 350, height: 350, opacity: 0.5 }}
-        /> */}
         </View>
       ))}
     </ScrollView>
@@ -238,13 +291,6 @@ const CurrentGoalRunning = () => {
 };
 
 const styles = StyleSheet.create({
-  template: {
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 5,
-  },
   header: {
     flexDirection: "row",
     marginTop: 30,
@@ -309,4 +355,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CurrentGoalRunning;
+export default CurrentGoalWalking;

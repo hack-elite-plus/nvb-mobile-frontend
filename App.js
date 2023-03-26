@@ -1,20 +1,20 @@
 import React from "react";
 import { View } from "react-native";
-import Bmi from "./components/bmi";
-import HeartRate from "./components/heartRate";
-import MyGoal from "./components/myGoal";
-import Temp from "./components/temp";
+import Bmi from "./Screens/bmi";
+import HeartRate from "./Screens/heartRate";
+import MyGoal from "./Screens/myGoal";
+import Temp from "./Screens/temp";
 import Navigator from "./routes/goalStack";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { TouchableOpacity } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CurrentGoalRunning from "./components/currentGoalRunning";
-import CurrentGoalBiking from "./components/currentGoalBiking";
-import CurrentGoalWalking from "./components/currentgoalWalking";
+import CurrentGoalRunning from "./Screens/currentGoalRunning";
+import CurrentGoalBiking from "./Screens/currentGoalBiking";
+import CurrentGoalWalking from "./Screens/currentgoalWalking";
 // import BottomTab from "./routes/BottomTab";
 // import GoalStack from "./routes/goalStack";
-import Analtics from "./components/analytics";
+import Analtics from "./Screens/analytics";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // import { useNavigation } from "@react-navigation/native";

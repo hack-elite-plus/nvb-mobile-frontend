@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import Stopwatch from "../components/stopwatch";
 const width_proportion = "24%";
 
 const Analtics = ({ navigation }) => {
@@ -109,7 +110,7 @@ const Analtics = ({ navigation }) => {
         />
       </View>
       <View style={styles.content}>
-        <Text>Running</Text>
+        {/* <Text>Running</Text>
         <Text>Current value: {value}</Text>
         <Text>value: {count}</Text>
         <TextInput
@@ -120,7 +121,7 @@ const Analtics = ({ navigation }) => {
         />
         <Button title="Start" onPress={updateValue} />
         <Button title="pause" onPress={handlePausePress}></Button>
-        <Button title="resume" onPress={resumeCounting}></Button>
+        <Button title="resume" onPress={resumeCounting}></Button> */}
         {/* <Button title="Pick Duration" onPress={openDurationPicker} />
         {duration > 0 && <Text>Duration: {duration}</Text>}
         <DateTimePicker
@@ -130,6 +131,7 @@ const Analtics = ({ navigation }) => {
           onConfirm={handleDuration}
           onCancel={closeDurationPicker}
         /> */}
+        <Stopwatch/>
       </View>
     </View>
   );

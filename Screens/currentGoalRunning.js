@@ -1,24 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { Button } from "@react-native-material/core";
-import { Text, View, StyleSheet, Image, Alert } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { IconButton, Button } from "@react-native-material/core";
+import { Text, View, StyleSheet, Image, ScrollView, Alert } from "react-native";
 const width_proportion = "30%";
 const width_content = "60%";
 const templateButton = "90%";
+import { useNavigation } from "@react-navigation/native";
+import Stopwatch from "../components/stopwatch";
 // import { Text } from "react-native-paper";
 
-const CurrentGoalBiking = () => {
+const CurrentGoalRunning = () => {
   const navigation = useNavigation();
-  // const route = useRoute();
-  // const { input } = route.params;
 
   const [templates, setTemplates] = useState([]);
   const [goalValue, setGoalValue] = useState("");
   const [count, setCount] = useState(0);
+  const [goaltype, setGoalType] = useState("");
+  const [isADistance, setIsGoalType] = useState(false);
+
+  //stopwatch
+  
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const intervalRef = useRef(null);
+
+  const toggle = () => {
+    setIsActive(!isActive);
+  };
+
+  const reset = () => {
+    setSeconds(0);
+    setIsActive(false);
+  };
+
+  const getDisplayTime = () => {
+    const hour = Math.floor(seconds / 3600);
+    const minute = Math.floor((seconds % 3600) / 60);
+    const second = Math.floor(seconds % 60);
+    return `${hour < 10 ? "0" : ""}${hour}:${minute < 10 ? "0" : ""}${minute}:${
+      second < 10 ? "0" : ""
+    }${second}`;
+  };
+
+  React.useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  React.useEffect(() => {
+    if (isActive) {
+      intervalRef.current = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+  }, [isActive]);
+  //end stopwatch
 
   const updateValue = () => {
-    fetch("http://localhost:8080/biking-update-value", {
+    fetch("http://localhost:8080/running-update-value", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -31,12 +72,12 @@ const CurrentGoalBiking = () => {
     });
   };
   const handlePausePress = () => {
-    fetch("http://localhost:8080/biking-pause-counting", {
+    fetch("http://localhost:8080/running-pause-counting", {
       method: "POST",
     });
   };
   const resumeCounting = () => {
-    fetch("http://localhost:8080/biking-resume-counting", {
+    fetch("http://localhost:8080/running-resume-counting", {
       method: "POST",
     })
       .then((response) => {
@@ -50,7 +91,7 @@ const CurrentGoalBiking = () => {
   };
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("http://localhost:8080/biking-get-value")
+      fetch("http://localhost:8080/running-get-value")
         .then((response) => response.json())
         .then((json) => {
           setCount(json.value);
@@ -65,11 +106,11 @@ const CurrentGoalBiking = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/goal/biking/value")
+    fetch("http://localhost:8080/api/goal/running/value")
       .then((response) => response.json())
       .then((data) => {
         setGoalValue(data);
-        alert("ADD VALUE TO Biking");
+        alert("ADD goalValue TO RUNNING");
       })
       .catch((error) => {
         console.log("Error:", error);
@@ -77,17 +118,52 @@ const CurrentGoalBiking = () => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:8080/api/goal/running/goalType")
+      .then((response) => response.text())
+      .then((data) => {
+        setGoalType(data);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+        alert("error");
+      });
+  }, []);
+  useEffect(() => {
+    if (goaltype === "duration") {
+      setIsGoalType(false);
+    } else if (goaltype === "distance") {
+      setIsGoalType(true);
+    } else {
+      console.log("error");
+    }
+  });
+  // const getdata = () => {
+  //   useEffect(() => {
+  //     fetch("http://localhost:8080/api/goal/running/value")
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setGoalValue(data);
+  //         alert("ADD VALUE TO RUNNING");
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error:", error);
+  //       });
+  //   }, []);
+  // };
+
   const createTemplate = () => {
     if (templates.length < 1) {
       const newTemplate = {};
+      // const newTemplate = { title: input };
       setTemplates([...templates, newTemplate]);
     } else {
-      Alert.alert("You cannot create any more templates.");
+      alert("You cannot create any more templates.");
     }
   };
 
   const deleteTemplate = (index) => {
-    fetch("http://localhost:8080/api/goal/biking", {
+    fetch("http://localhost:8080/api/goal/running", {
       method: "DELETE",
     })
       .then(() => {
@@ -102,14 +178,14 @@ const CurrentGoalBiking = () => {
   };
 
   return (
-    <View>
+    <ScrollView>
       <View style={styles.sportNavigate}>
         <Button
           style={styles.text1}
           title="Running"
-          titleStyle={{ color: "black" }}
-          variant="outlined"
-          onPress={() => navigation.navigate("Running")}
+          // titleStyle={{ color: "black" }}
+          variant="contained"
+          color="black"
         />
         <Button
           style={styles.text2}
@@ -117,13 +193,15 @@ const CurrentGoalBiking = () => {
           titleStyle={{ color: "black" }}
           variant="outlined"
           onPress={() => navigation.navigate("Walking")}
+          // onPress={() => navigation.navigate("Walking", { input: "" })}
         />
         <Button
           style={styles.text3}
           title="Biking"
-          // titleStyle={{ color: "black" }}
-          variant="contained"
-          color="black"
+          titleStyle={{ color: "black" }}
+          variant="outlined"
+          onPress={() => navigation.navigate("Biking")}
+          // onPress={() => navigation.navigate("Biking", { input: "" })}
         />
       </View>
       <View style={styles.template}>
@@ -135,14 +213,20 @@ const CurrentGoalBiking = () => {
           variant="outlined"
         />
       </View>
+
       {templates.map((template, index) => (
         <View key={index} style={styles.content}>
           <View style={styles.box}>
             <View style={styles.boxContent}>
               <Text style={{ fontSize: 20 }}>THIS WEEK</Text>
-              <Text style={{ fontSize: 40 }}>{count}</Text>
+              {isADistance ? (
+                <Text style={{ fontSize: 40 }}>{count}</Text>
+              ) : (
+                <Text style={{ fontSize: 40 }}>{getDisplayTime()}</Text>
+              )}
+              {/* <Text style={{ fontSize: 40 }}>{count}</Text> */}
               <Text style={{ fontSize: 20 }}>
-                of <Text style={{ fontSize: 20 }}>{goalValue}</Text> km
+                of <Text style={{ fontSize: 20 }}>{goalValue}</Text> {isADistance?"km":"minites"}
               </Text>
 
               <Icon
@@ -151,7 +235,7 @@ const CurrentGoalBiking = () => {
                 size={30}
                 color="#000"
               />
-              <Text style={{ fontSize: 20 }}>Biking</Text>
+              <Text style={{ fontSize: 20 }}>Running</Text>
             </View>
           </View>
           <View style={styles.bottomContent}>
@@ -173,8 +257,8 @@ const CurrentGoalBiking = () => {
           <View>
             <Button
               style={styles.bottomButton}
-              onPress={updateValue}
-              title="Start"
+              onPress={isADistance ? updateValue : toggle}
+              title={isADistance?"start":isActive?"pause":"start"}
               color="white"
               marginTop={10}
               leading={(props) => <Icon name="hourglass-start" {...props} />}
@@ -187,7 +271,7 @@ const CurrentGoalBiking = () => {
               marginTop={20}
               onPress={() => deleteTemplate(index)}
             ></Button>
-            <View style={styles.pause_resume_btn}>
+            {isADistance?(<View style={styles.pause_resume_btn}>
               <Button
                 leading={(props) => <Icon name="pause" {...props} size={20} />}
                 color="white"
@@ -201,15 +285,39 @@ const CurrentGoalBiking = () => {
                 color="white"
                 onPress={resumeCounting}
               />
-            </View>
+            </View>):(
+              <Button
+              title="reset"
+              leading={(props) => <Icon name="stop" {...props} size={20} />}
+              color="white"
+              onPress={reset}
+            />
+            )}
+            
+
+            <View></View>
           </View>
+
+          {/* <Image
+          source={{
+            uri: "https://sman2babelan.sch.id/assets/icon/ionicons-2.0.1/png/512/ios7-circle-outline.png",
+          }}
+          style={{ width: 350, height: 350, opacity: 0.5 }}
+        /> */}
         </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  template: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 5,
+  },
   header: {
     flexDirection: "row",
     marginTop: 30,
@@ -270,8 +378,8 @@ const styles = StyleSheet.create({
   },
   pause_resume_btn: {
     flexDirection: "row",
-    
+    alignItems: "center",
   },
 });
 
-export default CurrentGoalBiking;
+export default CurrentGoalRunning;
