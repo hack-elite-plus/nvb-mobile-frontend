@@ -1,10 +1,9 @@
-
-
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import SelectBody from './SelectBody';
 
 const SetUp1 = () => {
-    return(
+    return (
+        // Page Header..
         <View style={StyleSheet.Setup1Container}>
 
             <View style={styles.headContainer}>
@@ -19,25 +18,25 @@ const SetUp1 = () => {
 
 const styles = StyleSheet.create({
 
-    Setup1Container:{
-        flex:1,
+    Setup1Container: {
+        flex: 1,
     },
 
     headContainer: {
         color: 'white',
         marginTop: 0,
-        height:55,
+        height: 55,
         backgroundColor: '#2A92CD',
         paddingTop: 5,
-        alignItems:'center',
+        alignItems: 'center',
     },
 
     headtext: {
         margin: 10,
-        alignSelf:'center',
-        fontSize:24,
-        fontWeight:'bold',
-        color:'white',
+        alignSelf: 'center',
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'white',
     },
 
 });

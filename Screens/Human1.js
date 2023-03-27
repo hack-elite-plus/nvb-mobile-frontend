@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {Button, ScrollView, TextInput} from 'react-native';
-import { Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import {useNavigation} from "@react-navigation/native";
@@ -21,21 +21,20 @@ const Human1 = () => {
     const navigation = useNavigation();
 
 
-    const[fName, setfName]= useState('');
-    const[lName, setlName]= useState('');
-    const[gender, setGender]= useState('');
-    const[dob, setdob]= useState('');
-    const[height, setHeight]=useState('');
-    const[weight, setWeight]=useState('');
-    const[contact, setContact]=useState('');
-    const[state, setState]=useState('');
-    const[province, setProvince]=useState('');
-    const[post, setPost]=useState('');
-    const[City, setCity]=useState('');
+    const [fName, setfName] = useState('');
+    const [lName, setlName] = useState('');
+    const [gender, setGender] = useState('');
+    const [dob, setdob] = useState('');
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const [contact, setContact] = useState('');
+    const [state, setState] = useState('');
+    const [province, setProvince] = useState('');
+    const [post, setPost] = useState('');
+    const [City, setCity] = useState('');
 
 
-
-    return(
+    return (
         <ScrollView>
 
             <View>
@@ -44,9 +43,8 @@ const Human1 = () => {
                 </View>
 
 
-
                 <View>
-                    <Image style={styles.img} source={require("../assets/run.png")} />
+                    <Image style={styles.img} source={require("../assets/run.png")}/>
                     <Text style={styles.text}>Jogger/ Biker/ Runner</Text>
                 </View>
 
@@ -63,34 +61,33 @@ const Human1 = () => {
 
                         <View>
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='First Name'
-                                            onChangeText={setfName}
+                                <TextInput style={styles.input}
+                                           placeholder='First Name'
+                                           onChangeText={setfName}
                                 >
-
                                 </TextInput>
                             </View>
 
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='Last Name'
-                                            onChangeText={setlName}
+                                <TextInput style={styles.input}
+                                           placeholder='Last Name'
+                                           onChangeText={setlName}
                                 ></TextInput>
                             </View>
 
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='Gender'
-                                            onChangeText={setGender}
+                                <TextInput style={styles.input}
+                                           placeholder='Gender'
+                                           onChangeText={setGender}
                                 >
 
                                 </TextInput>
                             </View>
 
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='Date of Birth'
-                                            onChangeText={setdob}
+                                <TextInput style={styles.input}
+                                           placeholder='Date of Birth'
+                                           onChangeText={setdob}
                                 >
 
                                 </TextInput>
@@ -98,27 +95,27 @@ const Human1 = () => {
 
 
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='Height'
-                                            onChangeText={setHeight}
+                                <TextInput style={styles.input}
+                                           placeholder='Height'
+                                           onChangeText={setHeight}
                                 >
 
                                 </TextInput>
                             </View>
 
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='Weight'
-                                            onChangeText={setWeight}
+                                <TextInput style={styles.input}
+                                           placeholder='Weight'
+                                           onChangeText={setWeight}
                                 >
 
                                 </TextInput>
                             </View>
 
                             <View>
-                                <TextInput  style={styles.input}
-                                            placeholder='Contact Number'
-                                            onChangeText={setContact}
+                                <TextInput style={styles.input}
+                                           placeholder='Contact Number'
+                                           onChangeText={setContact}
                                 >
 
                                 </TextInput>
@@ -126,35 +123,35 @@ const Human1 = () => {
 
                             <View>
                                 <Text style={styles.addText}>Address</Text>
-                                <TextInput  style={styles.address}
-                                            placeholder='State'
-                                            onChangeText={setState}
+                                <TextInput style={styles.address}
+                                           placeholder='State'
+                                           onChangeText={setState}
                                 >
 
                                 </TextInput>
-                                <TextInput  style={styles.address}
-                                            placeholder='Province'
-                                            onChangeText={setProvince}
+                                <TextInput style={styles.address}
+                                           placeholder='Province'
+                                           onChangeText={setProvince}
                                 >
 
                                 </TextInput>
-                                <TextInput  style={styles.address}
-                                            placeholder='City'
-                                            onChangeText={setCity}
+                                <TextInput style={styles.address}
+                                           placeholder='City'
+                                           onChangeText={setCity}
                                 >
 
                                 </TextInput>
 
-                                <TextInput  style={styles.address}
-                                            placeholder='Post Code'
-                                            onChangeText={setPost}
+                                <TextInput style={styles.address}
+                                           placeholder='Post Code'
+                                           onChangeText={setPost}
                                 >
 
                                 </TextInput>
                             </View>
 
                             <View style={styles.button}>
-                                <Button  title="SUBMIT"/>
+                                <Button title="SUBMIT"/>
                             </View>
                         </View>
 
@@ -166,8 +163,6 @@ const Human1 = () => {
         </ScrollView>
 
 
-
-
     )
 
 }
@@ -177,68 +172,68 @@ const styles = StyleSheet.create({
     headContainer: {
         color: 'white',
         marginTop: 0,
-        height:55,
+        height: 55,
         backgroundColor: '#2A92CD',
         paddingTop: 5,
-        alignItems:'center',
+        alignItems: 'center',
     },
 
     headtext: {
         margin: 10,
-        alignSelf:'center',
-        fontSize:24,
-        fontWeight:'bold',
-        color:'white',
-    },
-
-    img:{
-        marginTop: 25,
-        alignSelf:'center',
-        height:150,
-        width:155,
-    },
-
-    text:{
+        alignSelf: 'center',
+        fontSize: 24,
         fontWeight: 'bold',
-        fontSize:24,
-        alignSelf:'center',
-        marginBottom:30
+        color: 'white',
+    },
+
+    img: {
+        marginTop: 25,
+        alignSelf: 'center',
+        height: 150,
+        width: 155,
+    },
+
+    text: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        alignSelf: 'center',
+        marginBottom: 30
 
     },
 
-    input:{
+    input: {
         borderWidth: 1,
         padding: 5,
-        width:'90%',
+        width: '90%',
         borderRadius: 5,
-        alignSelf:'center',
+        alignSelf: 'center',
         marginBottom: 30,
 
     },
 
-    button:{
-        width:'35%',
-        height:60,
+    button: {
+        width: '35%',
+        height: 60,
         alignSelf: 'center',
         borderRadius: 35,
-        marginTop:40,
+        marginTop: 40,
     },
 
-    address:{
+    address: {
         borderWidth: 1,
         padding: 5,
-        width:'90%',
+        width: '90%',
         borderRadius: 5,
-        alignSelf:'center',
+        alignSelf: 'center',
         marginTop: 5,
 
     },
 
 
-    addText:{
-        marginTop:30,
-        marginLeft:20,
-        fontSize:18,
+    addText: {
+        marginTop: 30,
+        marginLeft: 20,
+        fontSize: 18,
     }
 });
 

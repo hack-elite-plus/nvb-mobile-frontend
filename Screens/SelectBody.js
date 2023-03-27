@@ -1,34 +1,37 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, Button, Alert, ScrollView} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import {StyleSheet, Text, View, Image, Button, ScrollView} from "react-native";
+import {useNavigation} from '@react-navigation/native';
 
-const SelectBody= () => {
+const SelectBody = () => {
     const navigation = useNavigation();
 
-    return(
+    return (
+        // Access to scroll the screen
         <ScrollView>
-        <View style={styles.container}>
 
-            <View style={styles.header}>
-                <Text style={styles.headtext}>Profile SetUp</Text>
+            <View style={styles.container}>
+
+                <View style={styles.header}>
+                    <Text style={styles.headtext}>Profile SetUp</Text>
+                </View>
+
+                <View style={styles.textcontainer}>
+                    <Text style={styles.headingtext}>Select User Type</Text>
+                </View>
+
+                {/*navigate to setUp Jogger/Biker/Runner screen*/}
+                <View style={styles.runbox}>
+
+                    <Image style={styles.img} source={require('../assets/run.png')}/>
+                    <Button onPress={() => navigation.navigate('Human1')} title="Jogger/Biker/Runner"/>
+                </View>
+
+                {/*navigate to setUpPet screen*/}
+                <View style={styles.petbox}>
+                    <Image style={styles.img} source={require('../assets/pet.png')}/>
+                    <Button onPress={() => navigation.navigate("SetUpPet")} title="Pet"/>
+                </View>
             </View>
-
-            <View style={styles.textcontainer}>
-                <Text style={styles.headingtext}>Select User Type</Text>
-            </View>
-
-
-            <View style={styles.runbox}>
-
-                <Image style={styles.img} source={require('../assets/run.png')} />
-                <Button onPress={()=> navigation.navigate('Human1')} title="Jogger/Biker/Runner"/>
-            </View>
-
-            <View style={styles.petbox}>
-                <Image style={styles.img} source={require('../assets/pet.png')} />
-                <Button onPress={() => navigation.navigate("SetUpPet")} title="Pet"/>
-            </View>
-        </View>
         </ScrollView>
     );
 
@@ -39,17 +42,17 @@ const styles = StyleSheet.create({
     header: {
         color: 'white',
         marginTop: 0,
-        height:55,
+        height: 55,
         backgroundColor: '#2A92CD',
         paddingTop: 5,
-        alignItems:'center',
+        alignItems: 'center',
     },
     headtext: {
         margin: 10,
-        alignSelf:'center',
-        fontSize:24,
-        fontWeight:'bold',
-        color:'white',
+        alignSelf: 'center',
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'white',
     },
 
     headingtext: {
@@ -66,17 +69,17 @@ const styles = StyleSheet.create({
     },
 
     textcontainer: {
-        marginTop:10,
+        marginTop: 10,
         height: 60,
         width: 200,
         alignSelf: 'center',
     },
 
-    img:{
+    img: {
 
         alignSelf: 'center',
-        marginBottom:5,
-        height:100,
+        marginBottom: 5,
+        height: 100,
         width: 105,
     },
 
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         height: 175,
         width: 200,
-        padding:20,
+        padding: 20,
         marginTop: 5,
         backgroundColor: '#D9D9D9',
         borderRadius: 10,
@@ -96,14 +99,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         height: 175,
         width: 200,
-        padding:20,
-        marginTop:50,
+        padding: 20,
+        marginTop: 50,
         backgroundColor: '#D9D9D9',
         borderRadius: 10,
         alignContent: 'space-between',
     },
-
-
 
 
 });
