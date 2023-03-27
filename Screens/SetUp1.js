@@ -6,19 +6,19 @@ import SelectBody from './SelectBody';
 const SetUp1 = () => {
     return(
         <View style={StyleSheet.Setup1Container}>
-            
-        <View style={styles.headContainer}>
-            <Text style={styles.headtext}>Profile Setup</Text>
-        </View> 
+
+            <View style={styles.headContainer}>
+                <Text style={styles.headtext}>Profile Setup</Text>
+            </View>
             <SelectBody/>
         </View>
 
     );
 
- };
+};
 
- const styles = StyleSheet.create({
-    
+const styles = StyleSheet.create({
+
     Setup1Container:{
         flex:1,
     },
@@ -30,9 +30,9 @@ const SetUp1 = () => {
         backgroundColor: '#2A92CD',
         paddingTop: 5,
         alignItems:'center',
-   },
+    },
 
-   headtext: {
+    headtext: {
         margin: 10,
         alignSelf:'center',
         fontSize:24,
@@ -40,6 +40,6 @@ const SetUp1 = () => {
         color:'white',
     },
 
- });
+});
 
- export default SetUp1;
+export default SetUp1;

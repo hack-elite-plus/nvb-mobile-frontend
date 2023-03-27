@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {Button, ScrollView, TextInput} from 'react-native';
 import { Image, StyleSheet, Text, View} from 'react-native';
 import * as Yup from 'yup';
-import {Form, Formik} from "formik";
+import {Formik} from "formik";
 import {useNavigation} from "@react-navigation/native";
 
 const SignupSchema = Yup.object().shape({
@@ -65,7 +65,7 @@ const Human1 = () => {
                             <View>
                                 <TextInput  style={styles.input}
                                             placeholder='First Name'
-                                            value={values.FirstName}
+                                            onChangeText={setfName}
                                 >
 
                                 </TextInput>

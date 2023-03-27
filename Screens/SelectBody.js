@@ -1,11 +1,12 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, Button, Alert} from "react-native";
+import {StyleSheet, Text, View, Image, Button, Alert, ScrollView} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 const SelectBody= () => {
     const navigation = useNavigation();
 
     return(
+        <ScrollView>
         <View style={styles.container}>
 
             <View style={styles.header}>
@@ -20,15 +21,15 @@ const SelectBody= () => {
             <View style={styles.runbox}>
 
                 <Image style={styles.img} source={require('../assets/run.png')} />
-                <Button onPress={() => navigation.navigate("Human1")} title="Jogger/Biker/Runner"/>
+                <Button onPress={()=> navigation.navigate('Human1')} title="Jogger/Biker/Runner"/>
             </View>
 
             <View style={styles.petbox}>
                 <Image style={styles.img} source={require('../assets/pet.png')} />
                 <Button onPress={() => navigation.navigate("SetUpPet")} title="Pet"/>
             </View>
-
         </View>
+        </ScrollView>
     );
 
 }
@@ -65,10 +66,9 @@ const styles = StyleSheet.create({
     },
 
     textcontainer: {
-        marginTop: 30,
+        marginTop:10,
         height: 60,
         width: 200,
-
         alignSelf: 'center',
     },
 
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         height: 175,
         width: 200,
         padding:20,
-        marginTop: 10,
+        marginTop: 5,
         backgroundColor: '#D9D9D9',
         borderRadius: 10,
         alignContent: 'space-between',
