@@ -1,69 +1,67 @@
-import React,{useState, useRef, useCallback} from "react";
-import { StyleShee, SafeAreaView, Text, View, Platform } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { Constants } from 'expo-constants';
-import result from "./result";
-import control from "./control";
-import { displayTime } from "./util";
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text } from 'react-native';
+import { StartButton, PauseButton, ResetButton } from './Stopwachbutton';
 
-export default function Stopwatch(){
-    const [time, setTime] = useState(0);
-    const [isRunning, setRunning] = useState(false);
-    const timer =useReference(null);
-}
+const Stopwatch = () => {
+    const [seconds, setSeconds] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [hours, setHours] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const intervalRef = useRef(null);
 
-const handleLeftButtonPress  = useCallback ( () => {    
-    if (isRunning){
-        setResults((previousResults) => [time, previousResults.length, previousResults]);
-    }
+    const startTimer = () => {
+        setIsRunning(true);
+        intervalRef.current = setInterval(() => {
+            setSeconds((prevSeconds) => prevSeconds + 1);
+        }, 1000);
+    };
 
-    else{
-        clearInterval (timer.current);
-    }
-    setRunning((previousState) => !previousState);
-}, [isRunning, time, previousResults]);
+    const pauseTimer = () => {
+        setIsRunning(false);
+        clearInterval(intervalRef.current);
+    };
 
-return(
-    <SafeAreaView style={Styles.container}>
-        <StatusBar style='light'/>
-        <View style={Styles.display}>
-            <Control
-                isRunning={isRunning}
-                handleLeftButtonPress={handleLeftButtonPress}
-                handleRightButtonPress={handleRightButtonPress}
-            />
+    const resetTimer = () => {
+        setIsRunning(false);
+        clearInterval(intervalRef.current);
+        setSeconds(0);
+        setMinutes(0);
+        setHours(0);
+    };
+
+    useEffect(() => {
+        if (seconds === 60) {
+            setSeconds(0);
+            setMinutes((prevMinutes) => prevMinutes + 1);
+        }
+        if (minutes === 60) {
+            setMinutes(0);
+            setHours((prevHours) => prevHours + 1);
+        }
+    }, [seconds]);
+
+    return (
+        <View>
+            <View className="justify-center flex-row absolute top-0 w-full h-24 bg-black border-b-2 border-[#c7e5f1]">
+                <Text className=" items-center justify-center text-[70px] text-[#16a34a] absolute bottom-1">
+                    {hours.toString().padStart(2, '0')}:{minutes
+                        .toString()
+                        .padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+                </Text>
+            </View>
+
+            <View className="items-center flex-row absolute top-96 left-4 w-11/12 h-24 bg-black rounded-xl border-b-2 border-[#c7e5f1]">
+
+                {!isRunning && <StartButton onPress={startTimer} />}
+                {isRunning && <PauseButton onPress={pauseTimer} />}
+
+                <View className=" absolute right-6">
+                    <ResetButton onPress={resetTimer} /> 
+                </View>
+            </View>
+
         </View>
+    );
+};
 
-        <View style={styles.result}>
-             <Result results={results} />
-        </View>
-    </SafeAreaView>
-);
-
-const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor: 'black',
-        paddingTop: Constants.StatusBarHeight,
-    },
-
-    display: {
-        flex:3/5,
-        justifyContent:'center',
-        alignItems: 'center',
-    },
-    displayText: {
-        color:'#fff',
-        fontSize: 70,
-        fontWeight: "200",
-        fontFamily: Platform.OS === 'android' ? "Helvetica" : "Helvetica" ,
-    },
-
-    Control:{
-        height: 70,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
-
-    result: {flex: 2/5},
-});
+export default Stopwatch;
