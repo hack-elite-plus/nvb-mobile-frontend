@@ -2,7 +2,8 @@ import { View, Text, SafeAreaView, Image, TouchableOpacity, TouchableOpacityBase
 import * as Animatable from 'react-native-animatable';
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Biking, Hiking, Jogging, Running } from '../assets';
+import { Biking, Hiking, Jogging, Running, Crologo } from '../assets';
+import { Button } from '@react-native-material/core';
 
 const HomeScreen = () => {
 
@@ -12,17 +13,26 @@ const HomeScreen = () => {
     return (
         <SafeAreaView className="bg-white-100 flex-1 relative">
             {/*first section*/}
-            <View className="flex-row px-5 mt-3 items-ceter space-x-2">
-                <View className="w-12 h-12 bg-black rounded-full items-center justify-center">
-                    <Text className="text-[#57b8de] text-2xl font-semibold" >Go</Text>
+            <View className="">
+                <View className="flex-row px-5 mt-6 items-ceter space-x-2">
+                    <View className="w-12 h-12 bg-black rounded-full items-center justify-center">
+                        <Text className="text-[#57b8de] text-2xl font-semibold" >Go</Text>
+                    </View>
+                    <Text className="text-black text-2xl font-semibold mt-2"> With  Nimbus</Text>
                 </View>
-                <Text className="text-black text-2xl font-semibold mt-2"> With  Nimbus</Text>
-            </View>
 
-            {/*second section*/}
-            <View className="px-5  space-y-2">
-                <Text className="texxt-[#454545] text-[32px]">Enjoy the trip with</Text>
-                <Text className="text-[#57b8de] text-[36px] absolute -bottom-8 left-4 ">Good Moments</Text>
+                {/*second section*/}
+                <View className="px-5  space-y-2 mt-4">
+                    <Text className="texxt-[#454545] text-[32px]">Enjoy the trip with</Text>
+                    <Text className="text-[#57b8de] text-[36px] absolute -bottom-8 left-4 ">Good Moments</Text>
+                </View>
+
+                {/* <View className="w-24 h-36 bg-gray-300 rounded-md items-center justify-center shadow-lg absolute right-7 top-6">
+                    <Image
+                        source={Crologo}
+                        className="w-full h-full rounded-md object-cover"
+                    />
+                </View> */}
             </View>
 
             {/*background Rounds*/}
@@ -98,7 +108,8 @@ const HomeScreen = () => {
                             <Text className="text-[40px] text-[#527283]">Hiking</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("EmgPerson")}>
+
                         <View className="w-16 h-16 bg-gray-400 rounded-md items-center justify-center shadow-lg">
                             <Image
                                 source={Hiking}
