@@ -131,6 +131,7 @@ const Analtics = ({ navigation }) => {
           onConfirm={handleDuration}
           onCancel={closeDurationPicker}
         /> */}
+     
         <Stopwatch/>
       </View>
     </View>

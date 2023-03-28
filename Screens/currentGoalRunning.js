@@ -20,7 +20,6 @@ const CurrentGoalRunning = () => {
   const [isADistance, setIsGoalType] = useState(false);
 
   //stopwatch
-  
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const intervalRef = useRef(null);
@@ -58,6 +57,7 @@ const CurrentGoalRunning = () => {
   }, [isActive]);
   //end stopwatch
 
+  //when press strt button value goes to 0
   const updateValue = () => {
     fetch("http://localhost:8080/running-update-value", {
       method: "POST",
@@ -71,6 +71,7 @@ const CurrentGoalRunning = () => {
       setCount(0);
     });
   };
+
   const handlePausePress = () => {
     fetch("http://localhost:8080/running-pause-counting", {
       method: "POST",
@@ -89,6 +90,7 @@ const CurrentGoalRunning = () => {
         console.log(error);
       });
   };
+  //get counting value after 5 min
   useEffect(() => {
     const interval = setInterval(() => {
       fetch("http://localhost:8080/running-get-value")
@@ -181,25 +183,28 @@ const CurrentGoalRunning = () => {
     <ScrollView>
       <View style={styles.sportNavigate}>
         <Button
+          raised
+          primary
           style={styles.text1}
           title="Running"
           // titleStyle={{ color: "black" }}
           variant="contained"
-          color="black"
+          color="rgb(105, 89, 203)"
+         
         />
         <Button
           style={styles.text2}
           title="Walking"
-          titleStyle={{ color: "black" }}
           variant="outlined"
+          titleStyle={{ color: "rgb(76, 90, 129)" }}
           onPress={() => navigation.navigate("Walking")}
           // onPress={() => navigation.navigate("Walking", { input: "" })}
         />
         <Button
           style={styles.text3}
           title="Biking"
-          titleStyle={{ color: "black" }}
           variant="outlined"
+          titleStyle={{ color: "rgb(76, 90, 129)" }}
           onPress={() => navigation.navigate("Biking")}
           // onPress={() => navigation.navigate("Biking", { input: "" })}
         />
@@ -207,7 +212,7 @@ const CurrentGoalRunning = () => {
       <View style={styles.template}>
         <Button
           style={styles.templatebutton}
-          color="black"
+          titleStyle={{color:"rgb(76, 90, 129)"}}
           title="Create template"
           onPress={() => createTemplate()}
           variant="outlined"
@@ -218,24 +223,29 @@ const CurrentGoalRunning = () => {
         <View key={index} style={styles.content}>
           <View style={styles.box}>
             <View style={styles.boxContent}>
-              <Text style={{ fontSize: 20 }}>THIS WEEK</Text>
+              <Text style={{ fontSize: 20, color: "white" }}>THIS WEEK</Text>
               {isADistance ? (
-                <Text style={{ fontSize: 40 }}>{count}</Text>
+                <Text style={{ fontSize: 40, color: "rgb(76, 30, 129)" }}>
+                  {count}
+                </Text>
               ) : (
-                <Text style={{ fontSize: 40 }}>{getDisplayTime()}</Text>
+                <Text style={{ fontSize: 40, color: "white" }}>
+                  {getDisplayTime()}
+                </Text>
               )}
               {/* <Text style={{ fontSize: 40 }}>{count}</Text> */}
-              <Text style={{ fontSize: 20 }}>
-                of <Text style={{ fontSize: 20 }}>{goalValue}</Text> {isADistance?"km":"minites"}
+              <Text style={{ fontSize: 20, color: "white" }}>
+                <Text style={{ fontSize: 20 }}>{goalValue}</Text>{" "}
+                {isADistance ? "km" : "minites"}
               </Text>
 
               <Icon
                 style={{ marginTop: 10 }}
                 name="running"
                 size={30}
-                color="#000"
+                color="white"
               />
-              <Text style={{ fontSize: 20 }}>Running</Text>
+              <Text style={{ fontSize: 20, color: "white" }}>Running</Text>
             </View>
           </View>
           <View style={styles.bottomContent}>
@@ -244,66 +254,86 @@ const CurrentGoalRunning = () => {
                 style={{ marginRight: 5 }}
                 name="calendar-alt"
                 size={30}
-                color="#000"
+                color="rgb(76, 90, 129)"
               />
             </View>
             <View>
-              <Text>
+              <Text style={{ color: "rgb(76, 90, 129)" }}>
                 <Text>7</Text> Days{" "}
               </Text>
-              <Text>Remain</Text>
+              <Text style={{ color: "rgb(76, 90, 129)" }}>Remain</Text>
             </View>
           </View>
           <View>
             <Button
               style={styles.bottomButton}
               onPress={isADistance ? updateValue : toggle}
-              title={isADistance?"start":isActive?"pause":"start"}
+              title={isADistance ? "start" : isActive ? "pause" : "start"}
               color="white"
+              titleStyle={{ color: "rgb(76, 90, 129)" }}
               marginTop={10}
-              leading={(props) => <Icon name="hourglass-start" {...props} />}
+              leading={(props) => (
+                <Icon
+                  name="hourglass-start"
+                  {...props}
+                  color="rgb(76, 90, 129)"
+                />
+              )}
             ></Button>
             <Button
               style={styles.bottomButton}
               title="Delete"
               color="white"
-              leading={(props) => <Icon name="trash-alt" {...props} />}
+              titleStyle={{ color: "rgb(76, 90, 129)" }}
+              leading={(props) => (
+                <Icon name="trash-alt" {...props} color="rgb(76, 90, 129)" />
+              )}
               marginTop={20}
               onPress={() => deleteTemplate(index)}
             ></Button>
-            {isADistance?(<View style={styles.pause_resume_btn}>
-              <Button
-                leading={(props) => <Icon name="pause" {...props} size={20} />}
-                color="white"
-                onPress={handlePausePress}
-              />
+            {isADistance ? (
+              <View style={styles.pause_resume_btn}>
+                <Button
+                  leading={(props) => (
+                    <Icon
+                      name="pause"
+                      {...props}
+                      color="rgb(76, 90, 129)"
+                      size={20}
+                    />
+                  )}
+                  color="white"
+                  titleStyle={{ color: "rgb(76, 90, 129)" }}
+                  onPress={handlePausePress}
+                />
 
+                <Button
+                  leading={(props) => (
+                    <Icon
+                      name="caret-right"
+                      {...props}
+                      color="rgb(76, 90, 129)"
+                      size={30}
+                    />
+                  )}
+                  color="white"
+                  titleStyle={{ color: "rgb(76, 90, 129)" }}
+                  onPress={resumeCounting}
+                />
+              </View>
+            ) : (
               <Button
-                leading={(props) => (
-                  <Icon name="caret-right" {...props} size={30} />
-                )}
-                color="white"
-                onPress={resumeCounting}
+                title="reset"
+                leading={(props) => <Icon name="stop" {...props} size={20} />}
+                color="rgb(76, 90, 129)" 
+                
+                titleStyle={{ color: "rgb(76, 90, 129)" }}
+                onPress={reset}
               />
-            </View>):(
-              <Button
-              title="reset"
-              leading={(props) => <Icon name="stop" {...props} size={20} />}
-              color="white"
-              onPress={reset}
-            />
             )}
-            
 
             <View></View>
           </View>
-
-          {/* <Image
-          source={{
-            uri: "https://sman2babelan.sch.id/assets/icon/ionicons-2.0.1/png/512/ios7-circle-outline.png",
-          }}
-          style={{ width: 350, height: 350, opacity: 0.5 }}
-        /> */}
         </View>
       ))}
     </ScrollView>
@@ -344,7 +374,9 @@ const styles = StyleSheet.create({
   },
   box: {
     borderRadius: 150,
-    borderWidth: 2,
+    borderWidth: 5,
+    borderColor: "rgb(76, 90, 129)",
+    backgroundColor: "rgb(105, 89, 203)",
     width: width_content,
     height: 250,
     alignItems: "center",

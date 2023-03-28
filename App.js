@@ -21,10 +21,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // const Stack=createNativeStackNavigator();
 
 const Stack = createNativeStackNavigator();
-const Stack2=createNativeStackNavigator();
+const Stack2 = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const BottomTab = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -32,8 +32,12 @@ const BottomTab = () => {
         component={GoalStack}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="futbol" color={color} size={size} />
+          tabBarIcon: ({ focused, size }) => (
+            <Icon
+              name="futbol"
+              color={focused ? "rgb(105, 89, 203)" : "rgb(76, 90, 129)"}
+              size={size}
+            />
           ),
         }}
       />
@@ -57,8 +61,12 @@ const BottomTab = () => {
         component={AnalticStack}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="bolt" color={color} size={size} />
+          tabBarIcon: ({ focused, size }) => (
+            <Icon
+              name="bolt"
+              color={focused ? "rgb(105, 89, 203)" : "rgb(76, 90, 129)"}
+              size={size}
+            />
           ),
         }}
       />
@@ -118,31 +126,30 @@ const GoalStack = () => {
   );
 };
 const AnalticStack = () => {
-  return(
+  return (
     <Stack.Navigator>
-    <Stack.Screen
-      name="Report"
-      component={Analtics}
-      options={{ title: "Report", headerShown: false }}
-    />
-    <Stack.Screen
-      name="Heart"
-      component={HeartRate}
-      options={{ title: "Heart", headerShown: false }}
-    />
-    <Stack.Screen
-      name="Temp"
-      component={Temp}
-      options={{ title: "Temp", headerShown: false }}
-    />
-    <Stack.Screen
-      name="BMI"
-      component={Bmi}
-      options={{ title: "BMI", headerShown: false }}
-    />
-  </Stack.Navigator>
+      <Stack.Screen
+        name="Report"
+        component={Analtics}
+        options={{ title: "Report", headerShown: false }}
+      />
+      <Stack.Screen
+        name="Heart"
+        component={HeartRate}
+        options={{ title: "Heart", headerShown: false }}
+      />
+      <Stack.Screen
+        name="Temp"
+        component={Temp}
+        options={{ title: "Temp", headerShown: false }}
+      />
+      <Stack.Screen
+        name="BMI"
+        component={Bmi}
+        options={{ title: "BMI", headerShown: false }}
+      />
+    </Stack.Navigator>
   );
- 
 };
 const App = () => {
   return (

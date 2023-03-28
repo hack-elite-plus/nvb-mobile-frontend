@@ -1,7 +1,6 @@
 import { Button, Stack, Text, TextInput } from "@react-native-material/core";
 import React, { useState } from "react";
-import { StyleSheet, View,ScrollView } from "react-native";
-
+import { StyleSheet, View, ScrollView } from "react-native";
 
 const width_proportion = "30%";
 const width_list = "20%";
@@ -10,9 +9,9 @@ const widthbtn = "50%";
 const height_proportion = "40%";
 
 const goals = [
-  ["sportType", "sport type", ["running", "walking", "biking"]],
-  ["timeframe", "timeframe", ["per day", "per week", "per month", "per year"]],
-  ["goalType", "goal type", ["distance", "duration", "caluries"]],
+  ["sportType", "SPORT TYPE", ["running", "walking", "biking"]],
+  ["timeframe", "TIME FRAME", ["per day", "per week", "per month", "per year"]],
+  ["goalType", "GOAL TYPE", ["distance", "duration"]],
   ["value", "Add Goal Value"],
 ];
 
@@ -28,14 +27,12 @@ const MyGoal = ({ navigation }) => {
 
   const handleGoal = (index, key, item) => {
     const newGoal = { ...goal };
-    
     if (index == 3) {
       alert(input);
       newGoal[key] = input;
     } else {
       // alert("hi")
       newGoal[key] = item;
-      
     }
     setGoal(newGoal);
     // if(key==="goalType"){
@@ -57,7 +54,6 @@ const MyGoal = ({ navigation }) => {
     } else if (goal.sportType === "biking") {
       navigation.navigate("Biking");
     }
-   
 
     fetch("http://localhost:8080/api/goal/add", {
       method: "POST",
@@ -87,14 +83,11 @@ const MyGoal = ({ navigation }) => {
             Save
           </Text>
         </View>
-        <View>
+        <View style={styles.goalMapStyle}>
           {goals.map(([key, title, items], index) =>
             key != "value" ? (
               <View key={index}>
-                <Text style={styles.titletext}>
-                  {title}
-                  <Text>{index}</Text>
-                </Text>
+                <Text raised primary style={styles.titletext}>{title}</Text>
                 <Stack
                   direction="row"
                   spacing={2}
@@ -104,6 +97,7 @@ const MyGoal = ({ navigation }) => {
                 >
                   {items.map((item, index) => (
                     <Button
+                      
                       key={index}
                       style={styles.btn}
                       title={item}
@@ -111,17 +105,18 @@ const MyGoal = ({ navigation }) => {
                       sx={{
                         "&.Mui-selected": {},
                         "&.Mui-focusVisible": {
-                          border: "3px solid #F2A42A",
+                          border: "3px solid #fff",
                         },
                         ":hover": {
                           border: "3px solid #F2A42A",
                         },
                       }}
+                      raised primary
                       onPress={() => handleGoal(index, key, item)}
-                      variant={goal[key] === item ? "outlined" : "text"}
-                      color={goal[key] === item ? "black" : "black"}
-                      borderColor="blue"
-                      borderWidth={goal[key] === item ? 2 : 0}
+                      variant={goal[key] === item ? "contained" : "contained"}
+                      color={goal[key] === item ? "white" : "rgb(105, 89, 203)"}
+                      titleStyle={{ color:goal[key]===item?'rgb(76, 90, 129)':"white" }}
+                      borderWidth={goal[key] === item ? 1 : 0}
                     ></Button>
                   ))}
                 </Stack>
@@ -137,8 +132,13 @@ const MyGoal = ({ navigation }) => {
                   onChangeText={(text) => setInput(text)}
                   keyboardType="numeric"
                 ></TextInput>
-                <Button title="submit" style={styles.btn2} onPress={() => handleGoal(index,key)}></Button>
-                
+                <Button
+                  color="rgb(105, 89, 203)"
+                  title="submit"
+                  style={styles.btn2}
+                  onPress={() => handleGoal(index, key)}
+                  
+                ></Button>
               </View>
             )
           )}
@@ -173,32 +173,39 @@ const styles = StyleSheet.create({
     color: "blue",
     marginLeft: 20,
     fontSize: 20,
+    color:"rgb(105, 89, 203)",
+    fontWeight:"500"
   },
   text2: {
     float: "center",
     width: width_proportion,
     textAlign: "center",
     fontSize: 20,
+    color:'rgb(76, 90, 129)',
+    fontWeight:"500"
   },
   text3: {
     float: "right",
     width: width_proportion,
     textAlign: "right",
-    color: "red",
     fontSize: 20,
+    color:"rgb(105, 89, 203)",
+    fontWeight:"500"
   },
   btn: {
     borderColor: "black",
     width: "48%",
     margin: 3,
     padding: 10,
+    borderColor: 'rgb(105, 89, 203)',
+    color:'rgb(105, 89, 203)'
   },
   btonclick: {
     borderWidth: 2,
   },
   btn2: {
     width: "100%",
-    
+
     padding: 10,
     // marginRight: 10,
     // marginLeft: 8,
@@ -207,10 +214,15 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   titletext: {
-    fontSize: 20,
+    fontSize: 18,
     margin: 10,
-    marginLeft:20
+    marginLeft: 20,
+    fontWeight:'500',
+    color: 'rgb(76, 90, 129)'
   },
+  goalMapStyle:{
+    marginTop:10
+  }
 });
 
 export default MyGoal;
