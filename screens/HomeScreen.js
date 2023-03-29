@@ -36,21 +36,21 @@ const HomeScreen = () => {
             </View>
 
             {/*background Rounds*/}
-            <View className="w-[300px] h-[300px] bg-[#9ad4eb] rounded-full absolute bottom-36 -right-20"></View>
-            <View className="w-[250px] h-[250px] bg-[#e4c0ae] rounded-full absolute -bottom-16 -left-14"></View>
-            <View className="w-[90px] h-[90px] bg-[#df9de2] rounded-full absolute top-64 left-2"></View>
-            <View className="w-[190px] h-[190px] bg-[#95e0a5] rounded-full absolute -bottom-16 -right-16"></View>
+            <View className="w-[300px] h-[300px] bg-[#2014d1] rounded-full absolute bottom-36 -right-20"></View>
+            <View className="w-[250px] h-[250px] bg-[#e35711] rounded-full absolute -bottom-16 -left-14"></View>
+            <View className="w-[90px] h-[90px] bg-[#a20faa] rounded-full absolute top-64 left-2"></View>
+            <View className="w-[190px] h-[190px] bg-[#0aa32b] rounded-full absolute -bottom-16 -right-16"></View>
 
             {/*fourth section buttons For choice activity*/}
             <View className="flex-1 items-center justify-center absolute bottom-10 left-0 w-full h-full">
 
                 {/*Running section*/}
-                <View className="flex-row items-center justify-between px-2 absolute bottom-80 left-4 w-11/12 h-24 bg-slate-100 rounded-xl border-l-4 border-r-1 border-b-4 border-[#2f6f88] ">
+                <View className="flex-row items-center justify-between px-2 absolute bottom-80 left-4 w-11/12 h-24 bg-slate-300 rounded-xl border-l-4 border-r-1 border-b-4 border-[#2f6f88] ">
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Running")}>
                         <Animatable.View animation={"fadeIn"} easing="ease-in-out">
-                            <Text className="text-[18px] text-[#081e20] font-thin">start a quick run</Text>
-                            <Text className="text-[40px] text-[#113243]">Running</Text>
+                            <Text className="text-[18px] text-[#0B646B] font-thin">start a quick run</Text>
+                            <Text className="text-[40px] text-[#183c4d]">Running</Text>
                         </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -65,11 +65,11 @@ const HomeScreen = () => {
                 </View>
 
                 {/*Jogging section*/}
-                <View className="flex-row items-center justify-between px-2 absolute bottom-52 left-4 w-11/12 h-24 bg-slate-200 rounded-xl border-l-4 border-r-1 border-b-4 border-[#2f6f88] ">
+                <View className="flex-row items-center justify-between px-2 absolute bottom-52 left-4 w-11/12 h-24 bg-slate-300 rounded-xl border-l-4 border-r-1 border-b-4 border-[#2f6f88] ">
                     <TouchableOpacity>
                         <View>
-                            <Text className="text-[18px] text-[#0B646B] font-thin">start a quick Jogging</Text>
-                            <Text className="text-[40px] text-[#527283]">Jogging</Text>
+                            <Text className="text-[18px] text-[#0B646B] font-thin">start a quick Walk</Text>
+                            <Text className="text-[40px] text-#183c4d]">Waling</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -87,7 +87,7 @@ const HomeScreen = () => {
                     <TouchableOpacity>
                         <View>
                             <Text className="text-[18px] text-[#0B646B] font-thin">start a quick Ride</Text>
-                            <Text className="text-[40px] text-[#527283]">Biking</Text>
+                            <Text className="text-[40px] text-[#183c4d]">Biking</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -105,7 +105,7 @@ const HomeScreen = () => {
                     <TouchableOpacity>
                         <View>
                             <Text className="text-[18px] text-[#0B646B] font-thin">start a quick Hike</Text>
-                            <Text className="text-[40px] text-[#527283]">Hiking</Text>
+                            <Text className="text-[40px] text-[#183c4d]">Hiking</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("EmgPerson")}>
