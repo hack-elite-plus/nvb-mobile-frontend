@@ -1,109 +1,132 @@
 // Imports
 import React from "react";
-import {useState} from 'react';
-import {Button, ScrollView, TextInput} from 'react-native';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {useNavigation} from "@react-navigation/native";
+import { useState } from 'react';
+import { Button, ScrollView, TextInput } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 import { RadioButton } from 'react-native-paper';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
+
+const SignupSchema = Yup.object().shape({
+    petName: Yup.string()
+        .min(3, 'Too Short!')
+        .max(25, 'Too Long!')
+        .required('Please enter pet name.'),
+    age: Yup.string()
+        .matches(/^(?=.*?[0-9])(?=.*?[.])/, 'Invalid type.')
+        .required('Please enter pet age.'),
+    gender: Yup.string()
+        .required('Please select a gender.'),
+    category: Yup.string()
+        .required('Please select a category.'),
+});
 
 const SetUpPet = () => {
     const navigation = useNavigation();
 
-    const [petName, setpetName] = useState('');
-    const [age, setAge] = useState('');
-    const [gender, setGender] = useState('');
-    const [category, setCategory] = useState('');
-
-
     return (
         <ScrollView>
             <View>
-                {/*Input Fields in Form*/}
-
+                {/* Input Fields in Form */}
                 <View style={styles.headContainer}>
                     <Text style={styles.headtext}>Pet</Text>
                 </View>
 
                 <View>
-                    <Image style={styles.img} source={require("../assets/pet.png")}/>
-                    {/*<Text style={styles.text}>Pet</Text>*/}
+                    <Image style={styles.img} source={require("../assets/pet.png")} />
                 </View>
 
-                <View>
-                    <TextInput style={styles.input}
-                               placeholder='Pet Name'
-                               onChangeText={setpetName}
-                    >
+                <Formik
+                    initialValues={{
+                        petName: '',
+                        age: '',
+                        gender: '',
+                        category: '',
+                    }}
+                    validationSchema={SignupSchema}
+                    onSubmit={(values) => {
+                        // Handle form submission
+                        console.log(values);
+                    }}
+                >
+                    {({ values, errors, touched, handleChange, handleSubmit, setFieldTouched, isValid }) => (
+                        <View>
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Pet Name"
+                                    onChangeText={handleChange('petName')}
+                                    value={values.petName}
+                                    onBlur={() => setFieldTouched('petName')}
+                                />
+                                {touched.petName && errors.petName && (
+                                    <Text style={styles.error}>{errors.petName}</Text>
+                                )}
+                            </View>
 
-                    </TextInput>
-                </View>
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Age"
+                                    onChangeText={handleChange('age')}
+                                    value={values.age}
+                                    onBlur={() => setFieldTouched('age')}
+                                />
+                                {touched.age && errors.age && (
+                                    <Text style={styles.error}>{errors.age}</Text>
+                                )}
+                            </View>
 
-                <View>
-                    <TextInput style={styles.input}
-                               placeholder='Age'
-                               onChangeText={setAge}
-                    >
+                            <View style={styles.input}>
+                                <Text style={styles.label}>Gender</Text>
+                                <RadioButton.Group
+                                    onValueChange={handleChange('gender')}
+                                    value={values.gender}
+                                >
+                                    <View style={styles.radioButton}>
+                                        <RadioButton.Android value="male" />
+                                        <Text style={styles.radioButtonLabel}>Male</Text>
+                                    </View>
+                                    <View style={styles.radioButton}>
+                                        <RadioButton.Android value="female" />
+                                        <Text style={styles.radioButtonLabel}>Female</Text>
+                                    </View>
+                                </RadioButton.Group>
+                                {touched.gender && errors.gender && (
+                                    <Text style={styles.error}>{errors.gender}</Text>
+                                )}
+                            </View>
 
-                    </TextInput>
-                </View>
+                            <View style={styles.input}>
+                                <Text style={styles.label}>Category</Text>
+                                <RadioButton.Group
+                                    onValueChange={handleChange('category')}
+                                    value={values.category}
+                                >
+                                    <View style={styles.radioButton}>
+                                        <RadioButton.Android value="cat" />
+                                        <Text style={styles.radioButtonLabel}>Cat</Text>
+                                    </View>
+                                    <View style={styles.radioButton}>
+                                        <RadioButton.Android value="dog" />
+                                        <Text style={styles.radioButtonLabel}>Dog</Text>
+                                    </View>
+                                </RadioButton.Group>
+                                {touched.category && errors.category && (
+                                    <Text style={styles.error}>{errors.category}</Text>
+                                )}
+                            </View>
 
-                <View style={styles.input}>
-                    <Text style={styles.label}>Gender</Text>
-
-                    <View style={styles.radioButtonContainer}>
-                        <View style={styles.radioButton}>
-                            <RadioButton.Android
-                                value="male"
-                                status={gender === 'male' ? 'checked' : 'unchecked'}
-                                onPress={() => setGender('male')}
-                            />
-                            <Text style={styles.radioButtonLabel}>Male</Text>
+                            <View style={styles.button}>
+                                <Button title="SUBMIT" onPress={handleSubmit} />
+                            </View>
                         </View>
-
-                        <View style={styles.radioButton}>
-                            <RadioButton.Android
-                                value="female"
-                                status={gender === 'female' ? 'checked' : 'unchecked'}
-                                onPress={() => setGender('female')}
-                            />
-                            <Text style={styles.radioButtonLabel}>Female</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.input}>
-                    <Text style={styles.label}>Category</Text>
-
-                    <View style={styles.radioButtonContainer}>
-                        <View style={styles.radioButton}>
-                            <RadioButton.Android
-                                value="cat"
-                                status={category === 'cat' ? 'checked' : 'unchecked'}
-                                onPress={() => setCategory('cat')}
-                            />
-                            <Text style={styles.radioButtonLabel}>Cat</Text>
-                        </View>
-
-                        <View style={styles.radioButton}>
-                            <RadioButton.Android
-                                value="female"
-                                status={category === 'dog' ? 'checked' : 'unchecked'}
-                                onPress={() => setCategory('dog')}
-                            />
-                            <Text style={styles.radioButtonLabel}>Dog</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.button}>
-                    <Button title="SUBMIT"/>
-                </View>
-
+                    )}
+                </Formik>
             </View>
         </ScrollView>
-
     );
-
 };
 
 const styles = StyleSheet.create({
@@ -146,7 +169,7 @@ const styles = StyleSheet.create({
         width: '90%',
         borderRadius: 5,
         alignSelf: 'center',
-        marginBottom: 30,
+        marginTop: 30,
 
     },
 
@@ -176,6 +199,11 @@ const styles = StyleSheet.create({
     radioButtonLabel: {
         marginLeft: 5,
 
+    },
+    error: {
+        color: 'red',
+        marginLeft: 20,
+        marginTop: 0,
     },
 
 });
