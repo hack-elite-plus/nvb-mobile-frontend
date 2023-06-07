@@ -12,21 +12,18 @@ const SelectBody = () => {
             <View style={styles.container}>
 
                 <View style={styles.header}>
-                    <Text style={styles.headtext}>Profile SetUp</Text>
+                    <Text style={styles.headtext}>Select User Type</Text>
                 </View>
 
-                <View style={styles.textcontainer}>
-                    <Text style={styles.headingtext}>Select User Type</Text>
-                </View>
 
-                {/*navigate to setUp Jogger/Biker/Runner screen*/}
+                {/*navigate to  Jogger/Biker/Runner setUp screen*/}
                 <View style={styles.runbox}>
 
                     <Image style={styles.img} source={require('../assets/run.png')}/>
                     <Button onPress={() => navigation.navigate('Human1')} title="Jogger/Biker/Runner"/>
                 </View>
 
-                {/*navigate to setUpPet screen*/}
+                {/*navigate to Pet setUp screen*/}
                 <View style={styles.petbox}>
                     <Image style={styles.img} source={require('../assets/pet.png')}/>
                     <Button onPress={() => navigation.navigate("SetUpPet")} title="Pet"/>
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({
         height: 175,
         width: 200,
         padding: 20,
-        marginTop: 5,
+        marginTop: 50,
         backgroundColor: '#D9D9D9',
         borderRadius: 10,
         alignContent: 'space-between',

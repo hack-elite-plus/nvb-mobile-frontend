@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {Button, ScrollView, TextInput} from 'react-native';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from "@react-navigation/native";
-
+import { RadioButton } from 'react-native-paper';
 
 const SetUpPet = () => {
     const navigation = useNavigation();
@@ -18,13 +18,15 @@ const SetUpPet = () => {
     return (
         <ScrollView>
             <View>
+                {/*Input Fields in Form*/}
+
                 <View style={styles.headContainer}>
-                    <Text style={styles.headtext}>Profile Setup</Text>
+                    <Text style={styles.headtext}>Pet</Text>
                 </View>
 
                 <View>
                     <Image style={styles.img} source={require("../assets/pet.png")}/>
-                    <Text style={styles.text}>Pet</Text>
+                    {/*<Text style={styles.text}>Pet</Text>*/}
                 </View>
 
                 <View>
@@ -45,22 +47,52 @@ const SetUpPet = () => {
                     </TextInput>
                 </View>
 
-                <View>
-                    <TextInput style={styles.input}
-                               placeholder='Gender'
-                               onChangeText={setGender}
-                    >
+                <View style={styles.input}>
+                    <Text style={styles.label}>Gender</Text>
 
-                    </TextInput>
+                    <View style={styles.radioButtonContainer}>
+                        <View style={styles.radioButton}>
+                            <RadioButton.Android
+                                value="male"
+                                status={gender === 'male' ? 'checked' : 'unchecked'}
+                                onPress={() => setGender('male')}
+                            />
+                            <Text style={styles.radioButtonLabel}>Male</Text>
+                        </View>
+
+                        <View style={styles.radioButton}>
+                            <RadioButton.Android
+                                value="female"
+                                status={gender === 'female' ? 'checked' : 'unchecked'}
+                                onPress={() => setGender('female')}
+                            />
+                            <Text style={styles.radioButtonLabel}>Female</Text>
+                        </View>
+                    </View>
                 </View>
 
-                <View>
-                    <TextInput style={styles.input}
-                               placeholder='Category(Dog/Cat)'
-                               onChangeText={setCategory}
-                    >
+                <View style={styles.input}>
+                    <Text style={styles.label}>Category</Text>
 
-                    </TextInput>
+                    <View style={styles.radioButtonContainer}>
+                        <View style={styles.radioButton}>
+                            <RadioButton.Android
+                                value="cat"
+                                status={category === 'cat' ? 'checked' : 'unchecked'}
+                                onPress={() => setCategory('cat')}
+                            />
+                            <Text style={styles.radioButtonLabel}>Cat</Text>
+                        </View>
+
+                        <View style={styles.radioButton}>
+                            <RadioButton.Android
+                                value="female"
+                                status={category === 'dog' ? 'checked' : 'unchecked'}
+                                onPress={() => setCategory('dog')}
+                            />
+                            <Text style={styles.radioButtonLabel}>Dog</Text>
+                        </View>
+                    </View>
                 </View>
 
                 <View style={styles.button}>
@@ -118,6 +150,7 @@ const styles = StyleSheet.create({
 
     },
 
+
     button: {
         width: '35%',
         height: 60,
@@ -125,7 +158,25 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 35,
 
-    }
+    },
+
+    radioButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+
+    radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 10,
+
+    },
+
+    radioButtonLabel: {
+        marginLeft: 5,
+
+    },
 
 });
 

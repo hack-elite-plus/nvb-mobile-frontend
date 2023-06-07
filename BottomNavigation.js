@@ -83,9 +83,7 @@ function BottomNavigation() {
 }
 
 const styles = StyleSheet.create({
-    tab:{
 
-    }
 });
 
 

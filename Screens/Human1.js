@@ -4,6 +4,7 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import {useNavigation} from "@react-navigation/native";
+import { RadioButton } from 'react-native-paper';
 
 const SignupSchema = Yup.object().shape({
     FirstName: Yup.string()
@@ -32,6 +33,11 @@ const Human1 = () => {
     const [province, setProvince] = useState('');
     const [post, setPost] = useState('');
     const [City, setCity] = useState('');
+
+    const radioButtonsData = [
+        { label: 'Male', value: 'male' },
+        { label: 'Female', value: 'female' },
+    ];
 
 
     return (
@@ -75,14 +81,32 @@ const Human1 = () => {
                                 ></TextInput>
                             </View>
 
-                            <View>
-                                <TextInput style={styles.input}
-                                           placeholder='Gender'
-                                           onChangeText={setGender}
-                                >
+                            <View style={styles.input}>
+                                <Text style={styles.label}>Gender</Text>
 
-                                </TextInput>
+                                <View style={styles.radioButtonContainer}>
+                                    <View style={styles.radioButton}>
+                                        <RadioButton.Android
+                                            value="male"
+                                            status={gender === 'male' ? 'checked' : 'unchecked'}
+                                            onPress={() => setGender('male')}
+                                        />
+                                        <Text style={styles.radioButtonLabel}>Male</Text>
+                                    </View>
+
+                                    <View style={styles.radioButton}>
+                                        <RadioButton.Android
+                                            value="female"
+                                            status={gender === 'female' ? 'checked' : 'unchecked'}
+                                            onPress={() => setGender('female')}
+                                        />
+                                        <Text style={styles.radioButtonLabel}>Female</Text>
+                                    </View>
+                                </View>
                             </View>
+
+
+
 
                             <View>
                                 <TextInput style={styles.input}
@@ -234,7 +258,25 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginLeft: 20,
         fontSize: 18,
-    }
+    },
+
+    radioButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+
+    radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 10,
+
+    },
+
+    radioButtonLabel: {
+        marginLeft: 5,
+
+    },
 });
 
 export default Human1;

@@ -1,10 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Ionicons from "react-native-vector-icons/Ionicons";
+import React from "react";
 
-export default function Analytics({navigation}) {
+export default function Analytics() {
     return (
         <View style={styles.container}>
-            <Text>Analytics</Text>
+            <Text style={styles.text}>Analytics</Text>
+            <Ionicons name="bar-chart-outline" size={100} color="#1D8348"/>
+
             <StatusBar style="auto" />
         </View>
     );
@@ -17,5 +21,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    text: {
+        fontSize: 25,
+        color:'#1D8348',
+    }
 });
 

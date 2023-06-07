@@ -9,10 +9,12 @@ import React from "react";
 import Human1 from "../Screens/Human1";
 import SetUpPet from "../Screens/SetUpPet";
 
+
+
 const Stack = createNativeStackNavigator();
 
 
-export default function DashBoard({navigation}) {
+export default function DashBoard() {
     return (
         // Stack Navigation between the pages
 
@@ -33,7 +35,7 @@ export default function DashBoard({navigation}) {
 
             </React.Fragment>
 
-        </Stack.Navigato
+        </Stack.Navigator>
 
 
     )
