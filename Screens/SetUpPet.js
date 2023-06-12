@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         alignSelf: 'center',
         borderRadius: 35,
+        marginTop:25,
 
     },
 

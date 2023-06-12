@@ -2,6 +2,7 @@ import React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View} from 'react-native';
 import BottomNavigation from "./BottomNavigation";
+import EditProfile from "./Settings/EditProfile";
 
 
 function App () {
@@ -12,6 +13,7 @@ function App () {
 
             <StatusBar style="auto" />
             <BottomNavigation/>
+
 
         </View>
     )

@@ -1,84 +1,45 @@
-import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import React from "react";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
+// Imports
+import {StyleSheet, Text, View} from 'react-native';
 import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import React from "react";
+
+// Import Screens
+import Setting from "../Settings/Setting";
+import EditProfile from "../Settings/EditProfile";
+import Account from "../Settings/Account";
 
 const Stack = createNativeStackNavigator();
-export default function Settings() {
 
-
-    const handle = () => {
-    }
-
+export default function DashBoard() {
     return (
-        <View>
-            {/*link the pages of the setting features*/}
-            <TouchableOpacity onPress={handle}>
-                <View style={styles.container}>
-                    <Ionicons name="person-circle-outline" size={30} color="#000"/>
-                    <Text style={styles.text}>Edit Profile</Text>
-                </View>
-            </TouchableOpacity>
+        // Stack Navigation between the pages
 
-            <TouchableOpacity onPress={handle}>
-                <View style={styles.container}>
-                    <Ionicons name="key-outline" size={30} color="#000"/>
-                    <Text style={styles.text}>Account</Text>
-                </View>
-            </TouchableOpacity>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyled: {
+                    backgroundColor: 'transparent'
+                },
+            }}
+            initialRouteName={Setting}
+        >
+            {/*Define the pages that are in stack navigation*/}
 
-            <TouchableOpacity onPress={handle}>
-                <View style={styles.container}>
-                    <Ionicons name="lock-closed-outline" size={30} color="#000"/>
-                    <Text style={styles.text}>Privacy</Text>
-                </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handle}>
-
-                <View style={styles.container}>
-                    <Ionicons name="notifications-outline" size={30} color="#000"/>
-                    <Text style={styles.text}>Notifications</Text>
-                </View>
-            </TouchableOpacity>
-
-            <View style={styles.bottom1}>
-                <Text style={styles.bottom2}>Powered By </Text>
-                <Text style={styles.bottom2}>Nimbus Venture Band</Text>
-
-            </View>
+            <React.Fragment>
+                <Stack.Screen name="Settings" component={Setting}/>
+                <Stack.Screen name="EditProfile" component={EditProfile}/>
+                <Stack.Screen name="Account" component={Account}/>
 
 
-            <StatusBar style="auto"/>
+            </React.Fragment>
 
-        </View>
-    );
+        </Stack.Navigator>
+
+
+    )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        marginLeft: 50,
-        marginTop: 50,
-    },
-
-    text: {
-        fontSize: 20,
-        padding: 5,
-        marginLeft: 15,
-
-    },
-    bottom1: {
-        marginTop: 225,
-
-    },
-    bottom2:{
-
-        alignSelf:"center",
+const styles = StyleSheet.create({});
 
 
-    }
-});
 

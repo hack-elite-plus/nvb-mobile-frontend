@@ -6,7 +6,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 // Import Screens
 import SelectBody from "../Screens/SelectBody";
 import React from "react";
-import Human1 from "../Screens/Human1";
+import SetUpUser from "../Screens/SetUpUser";
 import SetUpPet from "../Screens/SetUpPet";
 
 
@@ -30,7 +30,7 @@ export default function DashBoard() {
 
             <React.Fragment>
                 <Stack.Screen name="SelectUserType" component={SelectBody}/>
-                <Stack.Screen name="Human1" component={Human1}/>
+                <Stack.Screen name="SetUpUser" component={SetUpUser}/>
                 <Stack.Screen name="SetUpPet" component={SetUpPet}/>
 
             </React.Fragment>

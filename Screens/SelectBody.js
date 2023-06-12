@@ -20,7 +20,7 @@ const SelectBody = () => {
                 <View style={styles.runbox}>
 
                     <Image style={styles.img} source={require('../assets/run.png')}/>
-                    <Button onPress={() => navigation.navigate('Human1')} title="Jogger/Biker/Runner"/>
+                    <Button onPress={() => navigation.navigate('SetUpUser')} title="Jogger/Biker/Runner"/>
                 </View>
 
                 {/*navigate to Pet setUp screen*/}

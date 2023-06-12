@@ -47,8 +47,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 
-const Human1 = () => {
-    const navigation = useNavigation();
+const SetUpUser = () => {
+    // const navigation = useNavigation();
 
     return (
         <ScrollView>
@@ -319,4 +319,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Human1;
+export default SetUpUser;
