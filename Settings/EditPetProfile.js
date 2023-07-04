@@ -1,7 +1,7 @@
 // Imports
 import React from "react";
 import { useState } from 'react';
-import {Button, ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {Alert, Button, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { RadioButton } from 'react-native-paper';
@@ -18,7 +18,7 @@ const SignupSchema = Yup.object().shape({
     age: Yup.number()
         .typeError('Age must be a number')
         .positive('Age must be a positive number')
-        .required('Please enter pet age'),
+        .required('Please enter your age'),
     gender: Yup.string()
         .required('Please select a gender.'),
     category: Yup.string()
@@ -27,10 +27,17 @@ const SignupSchema = Yup.object().shape({
 
 const SetUpPet = () => {
 
+    const [userId, setUserId] = useState('');
+    const [userDetails, setUserDetails] = useState(null);
     const navigation = useNavigation();
 
-    const handleSubmit = (values) => {
-        axios.post(`${BASE_URL}/pet/addPet`, {
+    const handleFetchUserDetails = () => {
+        fetchUserDetails(userId);
+    };
+
+    const handleUpdateUser = (values, userId) => {
+        axios
+            .put(`${BASE_URL}/pet/updatePetDetails/${userId}`, {
 
             petName: values.petName,
             age: values.age,
@@ -40,49 +47,82 @@ const SetUpPet = () => {
         })
             .then((response) => {
                 // Handle the response from the backend
-                console.log('Pet registration successful!');
+                console.log('Pet update successful!');
                 // Redirect or navigate to the next screen
-                alert("Pet Details Add successfully!!");
-                navigation.navigate('SelectUserType');
+                alert("Pet Update successful!!");
+                navigation.navigate('SelectEditUser');
             })
             .catch((error) => {
                 // Handle any errors
-                console.error('Error registering Pet:', error);
+                console.error('Error Pet Update:', error);
+                Alert.alert('Error', 'Failed to update pet details');
+
+            });
+    };
+
+    const fetchUserDetails = (userId) => {
+        axios
+            .get(`${BASE_URL}/pet/getPetDetails/${userId}`)
+            .then((response) => {
+                setUserDetails(response.data);
+
+            })
+            .catch((error) => {
+                console.error('Error fetching pet details:', error);
+                Alert.alert('Error', 'Failed to fetch pet details');
             });
     };
 
     return (
         <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.headtext}>Edit Pet</Text>
+                    </View>
+
+                    <Text style={styles.texttitle}>Enter Pet ID</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Pet ID"
+                        value={userId}
+                        onChangeText={setUserId}
+                    />
+
+                    <TouchableOpacity style={styles.button} onPress={handleFetchUserDetails}>
+                        <Text style={styles.buttonText}>Fetch User Details</Text>
+                    </TouchableOpacity>
+                </View>
             <View>
                 {/* Input Fields in Form */}
-                <View style={styles.headContainer}>
-                    <Text style={styles.headtext}>Pet</Text>
-                </View>
 
-                <View>
-                    <Image style={styles.img} source={require("../assets/pet.png")} />
-                </View>
-
+                {userDetails && (
                 <Formik
                     initialValues={{
-                        petName: '',
-                        age: '',
-                        gender: '',
-                        category: '',
+                        petName: userDetails.petName,
+                        age: userDetails.age,
+                        gender: userDetails.gender,
+                        category: userDetails.category,
                     }}
                     validationSchema={SignupSchema}
-                    onSubmit={handleSubmit}
+                    onSubmit={(values) => handleUpdateUser(values, userId)}
 
                 >
-                    {({ values, errors, touched, handleChange, handleSubmit, setFieldTouched, isValid }) => (
-                        <View style={styles.container}>
+                    {({
+                          handleChange,
+                          handleBlur,
+                          handleSubmit,
+                          values,
+                          errors,
+                          touched,
+                      }) => (
+                          <View >
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Pet Name *"
+                                    placeholder="Pet Name"
                                     onChangeText={handleChange('petName')}
                                     value={values.petName}
-                                    onBlur={() => setFieldTouched('petName')}
+                                    onBlur={handleBlur('petName')}
                                 />
                                 {touched.petName && errors.petName && (
                                     <Text style={styles.error}>{errors.petName}</Text>
@@ -92,10 +132,10 @@ const SetUpPet = () => {
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Age *"
+                                    placeholder="Age"
                                     onChangeText={handleChange('age')}
                                     value={values.age}
-                                    onBlur={() => setFieldTouched('age')}
+                                    onBlur={handleBlur('age')}
                                     keyboardType="numeric"
                                 />
                                 {touched.age && errors.age && (
@@ -104,7 +144,7 @@ const SetUpPet = () => {
                             </View>
 
                             <View style={styles.input}>
-                                <Text style={styles.label}>Gender *</Text>
+                                <Text style={styles.label}>Gender</Text>
                                 <RadioButton.Group
                                     onValueChange={handleChange('gender')}
                                     value={values.gender}
@@ -124,7 +164,7 @@ const SetUpPet = () => {
                             </View>
 
                             <View style={styles.input}>
-                                <Text style={styles.label}>Category *</Text>
+                                <Text style={styles.label}>Category</Text>
                                 <RadioButton.Group
                                     onValueChange={handleChange('category')}
                                     value={values.category}
@@ -146,13 +186,14 @@ const SetUpPet = () => {
                             <View >
                                 <TouchableOpacity  style={styles.button} onPress={handleSubmit}>
                                     <View >
-                                        <Text style={styles.text}>SUBMIT</Text>
+                                        <Text style={styles.text}>UPDATE</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     )}
                 </Formik>
+                    )}
             </View>
         </ScrollView>
     );
@@ -160,8 +201,41 @@ const SetUpPet = () => {
 
 const styles = StyleSheet.create({
 
-    container: {
-        backgroundColor: '#F1EEF4',
+
+    header: {
+        color: 'white',
+        height: 55,
+        backgroundColor: '#B181EA',
+        alignItems: 'center',
+        marginBottom:5,
+        borderRadius:10,
+    },
+    buttonText:{
+        color:"white"
+    },
+    text: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color:'white',
+    },
+    container:{
+        backgroundColor: '#E2D6F3',
+        height:230,
+        width: '90%',
+        alignSelf:'center',
+        // justifyContent:'center',
+        marginTop:50,
+        borderRadius:10,
+
+    },
+
+    texttitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop:10,
+        color:'black',
+        alignItems:'center',
     },
 
     headContainer: {
@@ -188,13 +262,6 @@ const styles = StyleSheet.create({
         width: 150,
     },
 
-    text: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        color:'white',
-        alignSelf: 'center',
-    },
-
     input: {
         borderWidth: 1,
         padding: 5,
@@ -202,6 +269,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignSelf: 'center',
         marginTop: 30,
+        backgroundColor:"white",
         borderColor:'#461974'
 
     },
@@ -209,12 +277,13 @@ const styles = StyleSheet.create({
 
     button: {
         width: '35%',
-        height: 50,
+        height: 40,
+        alignItems:"center",
         alignSelf: 'center',
         borderRadius: 10,
         marginTop: 20,
         marginBottom: 15,
-        paddingTop: 12,
+        paddingTop: 8,
         backgroundColor: '#8c80f9',
 
     },

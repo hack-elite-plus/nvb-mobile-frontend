@@ -18,7 +18,7 @@ export default function MyProfile({ navigation }) {
     const fetchUserDetails = () => {
         // Make an API request to fetch user details based on the provided user ID
         axios
-            .get(`${BASE_URL}/user/getUserDetails/${userId}`)
+            .get(`${BASE_URL}/pet/getPetDetails/${userId}`)
             .then((response) => {
                 // Handle the successful response
                 setUserDetails(response.data);
@@ -34,41 +34,37 @@ export default function MyProfile({ navigation }) {
     return (
         <View >
             <View style={styles.headContainer}>
-                <Text style={styles.headtext}>Display User Details</Text>
+                <Text style={styles.headtext}>Display Pet Details</Text>
             </View>
             <ScrollView>
-            <View style={styles.maincontainer}>
-                <Image style={styles.img} source={require('../assets/user_care.png')}/>
+                <View style={styles.maincontainer}>
+                    <Image style={styles.img} source={require('../assets/animal-care.png')}/>
 
-                <View style={styles.container}>
-                    <Text>Enter Your User ID</Text>
-            <TextInput
-                style={styles.input}
-                // placeholder="Enter Your User ID"
-                value={userId}
-                onChangeText={setUserId}
-            />
-                <TouchableOpacity  style={styles.button} onPress={fetchUserDetails}>
-                    <View >
-                        <Text style={styles.text}>Display User Details</Text>
+                    <View style={styles.container}>
+                        <Text>Enter Pet ID</Text>
+                        <TextInput
+                            style={styles.input}
+                            // placeholder="Enter Your User ID"
+                            value={userId}
+                            onChangeText={setUserId}
+                        />
+                        <TouchableOpacity  style={styles.button} onPress={fetchUserDetails}>
+                            <View >
+                                <Text style={styles.text}>Display Pet Details</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-            </View>
-            </View>
+                </View>
             </ScrollView>
             {userDetails && (
                 <View style={styles.detailsContainer}>
 
                     <Modal isVisible={isModalVisible}>
                         <View style={styles.popupContainer}>
-                            <Text style={styles.popupText}>User Name: {userDetails.firstName} {userDetails.lastName}</Text>
-                            <Text style={styles.popupText}>Gender: {userDetails.gender}</Text>
-                            <Text style={styles.popupText}>Height: {userDetails.height} m</Text>
-                            <Text style={styles.popupText}>Weight: {userDetails.weight} kg</Text>
-                            <Text style={styles.popupText}>Contact_No: {userDetails.contact}</Text>
-                            <Text style={styles.popupText}>State: {userDetails.state}</Text>
-                            <Text style={styles.popupText}>City: {userDetails.city}</Text>
-                            <Text style={styles.popupText}>Province: {userDetails.province}</Text>
+                            <Text style={styles.popupText}>Pet Name: {userDetails.petName} {userDetails.lastName}</Text>
+                            <Text style={styles.popupText}>Age: {userDetails.age}</Text>
+                            <Text style={styles.popupText}>Gender: {userDetails.gender} </Text>
+                            <Text style={styles.popupText}>Category: {userDetails.category} </Text>
 
                             <TouchableOpacity  style={styles.button} onPress={toggleModal}>
                                 <View >
@@ -160,7 +156,7 @@ const styles = StyleSheet.create({
     popupContainer: {
         width:'90%',
         marginTop: 20,
-       alignSelf:'center',
+        alignSelf:'center',
         alignItems:'center',
         padding:20,
         backgroundColor: 'white',

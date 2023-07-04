@@ -16,7 +16,7 @@ export default function Settings() {
     return (
         <View>
             {/*link the pages of the setting features*/}
-            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+            <TouchableOpacity onPress={() => navigation.navigate('SelectEditUser')}>
                 <View style={styles.container}>
                     <Ionicons name="person-circle-outline" size={30} color="#000"/>
                     <Text style={styles.text}>Edit Profile</Text>
@@ -24,7 +24,7 @@ export default function Settings() {
             </TouchableOpacity>
 
 
-            <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+            <TouchableOpacity onPress={() => navigation.navigate('SelectDisplay')}>
                 <View style={styles.container}>
                     <Ionicons name="key-outline" size={30} color="#000"/>
                     <Text style={styles.text}>Account</Text>

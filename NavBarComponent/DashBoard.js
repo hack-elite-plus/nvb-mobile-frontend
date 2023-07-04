@@ -29,9 +29,9 @@ export default function DashBoard() {
             {/*Define the pages that are in stack navigation*/}
 
             <React.Fragment>
-                <Stack.Screen name="SelectUserType" component={SelectBody}/>
-                <Stack.Screen name="SetUpUser" component={SetUpUser}/>
-                <Stack.Screen name="SetUpPet" component={SetUpPet}/>
+                <Stack.Screen name="SelectUserType" component={SelectBody} options={{headerShown:false}}/>
+                <Stack.Screen name="SetUpUser" component={SetUpUser} options={{headerShown:false}}/>
+                <Stack.Screen name="SetUpPet" component={SetUpPet} options={{headerShown:false}}/>
 
             </React.Fragment>
 

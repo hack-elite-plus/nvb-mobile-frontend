@@ -1,30 +1,32 @@
-import { useState } from 'react';
-import { Button, ScrollView, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import {Button, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import axios from 'axios';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
 import { RadioButton } from 'react-native-paper';
+import BASE_URL from "../config";
 
 const SignupSchema = Yup.object().shape({
+
     fName: Yup.string()
         .min(3, 'Too Short!')
-        .max(25, 'Too Long!')
+        .max(25, 'Too long!')
         .required('Please enter your first name.'),
     lName: Yup.string()
         .min(3, 'Too Short!')
-        .max(25, 'Too Long!')
+        .max(25, 'Too long!')
         .required('Please enter your last name.'),
-    dob: Yup.string()
-        .matches(/^(?=.*?[0-9])(?=.*?[-/.])/,  'invalid type.')
-        .required('Please enter your date of birth.'),
     gender: Yup.string()
         .required('Please select a gender.'),
-    height: Yup.string()
-        .matches(/^(?=.*?[0-9])(?=.*?[.])/,  'invalid type.')
+    height: Yup.number()
+        .typeError('Height must be a number')
+        .positive('Height must be a positive number')
         .required('Please enter your height in meter.'),
-    weight: Yup.string()
-        .matches(/^(?=.*?[0-9])(?=.*?[.])/,  'invalid type.')
+    weight: Yup.number()
+        .typeError('Weight must be a number')
+        .positive('Weight must be a positive number')
         .required('Please enter your weight in kilograms.'),
     contact: Yup.string()
         .min(10, 'invalid')
@@ -39,27 +41,57 @@ const SignupSchema = Yup.object().shape({
     city: Yup.string()
         .min(3, 'Too Short!')
         .required('Please enter your city.'),
-    post: Yup.string()
-        .min(3, 'invalid')
-        .max(10, 'invalid')
-        .matches(/^[0-9]+$/,  'can only contain digits'),
+    // post: Yup.string()
+    //     .min(3, 'invalid')
+    //     .max(10, 'invalid')
+    //     .matches(/^[0-9]+$/,  'can only contain digits'),
 
 });
 
 
+
+
 const SetUpUser = () => {
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
+
+    const handleSubmit = (values) => {
+        axios.post(`${BASE_URL}/user/addUser`, {
+            firstName: values.fName,
+            lastName: values.lName,
+            gender: values.gender,
+            height: values.height,
+            weight: values.weight,
+            contact: values.contact,
+            state: values.state,
+            province: values.province,
+            city: values.city,
+            postcode: values.post,
+
+        })
+            .then((response) => {
+                // Handle the response from the backend
+                console.log('User registration successful!');
+                // Redirect or navigate to the next screen
+                alert("User Details Add successfully!!");
+                navigation.navigate('SelectUserType');
+            })
+            .catch((error) => {
+                // Handle any errors
+                console.error('Error registering User:', error);
+            });
+    };
+
 
     return (
         <ScrollView>
             <View>
                 <View style={styles.headContainer}>
-                    <Text style={styles.headtext}>Profile Setup</Text>
+                    <Text style={styles.headtext}>Jogger / Biker /Runner</Text>
                 </View>
 
                 <View>
                     <Image style={styles.img} source={require('../assets/run.png')} />
-                    <Text style={styles.text}>Jogger/ Biker/ Runner</Text>
+
                 </View>
 
                 <Formik
@@ -67,7 +99,6 @@ const SetUpUser = () => {
                         fName: '',
                         lName: '',
                         gender: '',
-                        dob: '',
                         height: '',
                         weight: '',
                         contact: '',
@@ -77,38 +108,40 @@ const SetUpUser = () => {
                         city: '',
                     }}
                     validationSchema={SignupSchema}
+                    onSubmit={handleSubmit}
                 >
                     {({ values, errors, touched, handleChange, handleSubmit, setFieldTouched, isValid }) => (
-                        <View>
+                        <View style={styles.container}>
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="First Name"
+                                    placeholder="First Name *"
                                     onChangeText={handleChange('fName')}
                                     value={values.fName}
-                                    onBlur={()=> setFieldTouched('fname')}
+                                    onBlur={()=> setFieldTouched('fName')}
+
                                 />
-                                { touched.fname && errors.fName && (
-                                    <Text style={styles.error} >{errors.fName}</Text>
+                                {touched.fName && errors.fName && (
+                                    <Text style={styles.error}>{errors.fName}</Text>
                                 )}
                             </View>
 
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Last Name"
+                                    placeholder="Last Name *"
                                     onChangeText={handleChange('lName')}
                                     value={values.lName}
-                                    onBlur={()=> setFieldTouched('lname')}
+                                    onBlur={()=> setFieldTouched('lName')}
 
                                 />
-                                { touched.lname && errors.lName && (
+                                {touched.lName && errors.lName && (
                                     <Text style={styles.error}>{errors.lName}</Text>
                                 )}
                             </View>
 
                             <View style={styles.input}>
-                                <Text style={styles.label}>Gender</Text>
+                                <Text style={styles.label}>Gender *</Text>
                                 <RadioButton.Group
                                     onValueChange={handleChange('gender')}
                                     value={values.gender}
@@ -131,24 +164,11 @@ const SetUpUser = () => {
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Date of Birth"
-                                    onChangeText={handleChange('dob')}
-                                    value={values.dob}
-                                    onBlur={()=> setFieldTouched('dob')}
-
-                                />
-                                { touched.dob && errors.dob && (
-                                    <Text style={styles.error}>{errors.dob}</Text>
-                                )}
-                            </View>
-
-                            <View>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Height (m)"
+                                    placeholder="Height (m) *"
                                     onChangeText={handleChange('height')}
                                     value={values.height}
                                     onBlur={()=> setFieldTouched('height')}
+                                    keyboardType="numeric"
 
                                 />
                                 {touched.height && errors.height && (
@@ -159,10 +179,11 @@ const SetUpUser = () => {
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Weight (kg)"
+                                    placeholder="Weight (kg) *"
                                     onChangeText={handleChange('weight')}
                                     value={values.weight}
                                     onBlur={()=> setFieldTouched('weight')}
+                                    keyboardType="numeric"
 
                                 />
                                 {touched.weight && errors.weight && (
@@ -173,10 +194,11 @@ const SetUpUser = () => {
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Contact Number"
+                                    placeholder="Contact Number *"
                                     onChangeText={handleChange('contact')}
                                     value={values.contact}
                                     onBlur={()=> setFieldTouched('contact')}
+                                    keyboardType="numeric"
 
                                 />
                                 {touched.contact && errors.contact && (
@@ -199,7 +221,7 @@ const SetUpUser = () => {
                                 )}
                                 <TextInput
                                     style={styles.address}
-                                    placeholder="Province"
+                                    placeholder="Province *"
                                     onChangeText={handleChange('province')}
                                     value={values.province}
                                     onBlur={()=> setFieldTouched('province')}
@@ -210,7 +232,7 @@ const SetUpUser = () => {
                                 )}
                                 <TextInput
                                     style={styles.address}
-                                    placeholder="City"
+                                    placeholder="City *"
                                     onChangeText={handleChange('city')}
                                     value={values.city}
                                     onBlur={()=> setFieldTouched('city')}
@@ -232,9 +254,13 @@ const SetUpUser = () => {
                                 )}
                             </View>
 
-                            <View style={styles.button}>
-                                <Button title="SUBMIT" onPress={handleSubmit} />
-                            </View>
+                            <View >
+                                <TouchableOpacity  style={styles.button} onPress={handleSubmit}>
+                                    <View >
+                                        <Text style={styles.text}>SUBMIT</Text>
+                                    </View>
+                                </TouchableOpacity>
+                        </View>
                         </View>
                     )}
                 </Formik>
@@ -244,11 +270,15 @@ const SetUpUser = () => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#F1EEF4',
+    },
+
     headContainer: {
         color: 'white',
         marginTop: 0,
         height: 55,
-        backgroundColor: '#2A92CD',
+        backgroundColor: '#B181EA',
         paddingTop: 5,
         alignItems: 'center',
     },
@@ -267,9 +297,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontWeight: 'bold',
-        fontSize: 24,
+        fontSize:18,
         alignSelf: 'center',
-        marginBottom: 30,
+        color:'white',
+        shadowColor:'#B181EA',
+        shadowOpacity: 1,
     },
     input: {
         borderWidth: 1,
@@ -279,13 +311,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 0,
         marginTop:30,
+        borderColor:'#461974'
     },
     button: {
         width: '35%',
         height: 60,
         alignSelf: 'center',
-        borderRadius: 35,
-        marginTop: 40,
+        borderRadius: 10,
+        marginTop: 30,
+        marginBottom: 15,
+        paddingTop: 20,
+        backgroundColor: '#8c80f9',
+
     },
     address: {
         borderWidth: 1,
@@ -317,6 +354,14 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: 0,
     },
+    // button: {
+    //     marginTop: 5,
+    //     backgroundColor: '#8c80f9',
+    //     borderRadius: 10,
+    //     padding: 5,
+    //     width:"45%",
+    // },
+
 });
 
 export default SetUpUser;

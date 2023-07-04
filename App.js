@@ -2,8 +2,7 @@ import React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View} from 'react-native';
 import BottomNavigation from "./BottomNavigation";
-import EditProfile from "./Settings/EditProfile";
-
+import SelectBody from "./Screens/SelectBody";
 
 function App () {
 

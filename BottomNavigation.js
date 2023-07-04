@@ -10,7 +10,7 @@ import Activity from './NavBarComponent/Activity';
 import Analytics from './NavBarComponent/Analytics';
 import MyGoal from './NavBarComponent/MyGoal';
 import MyProfile from './NavBarComponent/MyProfile';
-import Settings from './NavBarComponent/Settings';
+import Settin from './NavBarComponent/Settin';
 import {StyleSheet} from "react-native";
 
 
@@ -61,7 +61,7 @@ function BottomNavigation() {
                     },
                 })}
                 tabBarOptions={{
-                    activeTintColor: '#2A92CD',
+                    activeTintColor: '#B181EA',
                     inactiveTintColor: 'grey',
                     labelStyle: {paddingBottom: 10, fontSize: 10},
                     style: {padding: 10, height: 70},
@@ -69,12 +69,12 @@ function BottomNavigation() {
 
                 }}>
 
-                <Tab.Screen style ={styles.tab} name={Dashboard} component={DashBoard}/>
-                <Tab.Screen name={activity} component={Activity}/>
-                <Tab.Screen name={Analytic} component={Analytics}/>
-                <Tab.Screen name={Mygoal} component={MyGoal}/>
-                <Tab.Screen name={Profile} component={MyProfile}/>
-                <Tab.Screen name={Setting} component={Settings}/>
+                <Tab.Screen style ={styles.tab} name={Dashboard} component={DashBoard} />
+                <Tab.Screen name={activity} component={Activity} />
+                <Tab.Screen name={Analytic} component={Analytics} />
+                <Tab.Screen name={Mygoal} component={MyGoal} />
+                <Tab.Screen name={Profile} component={MyProfile} />
+                <Tab.Screen name={Setting} component={Settin} />
 
 
             </Tab.Navigator>
